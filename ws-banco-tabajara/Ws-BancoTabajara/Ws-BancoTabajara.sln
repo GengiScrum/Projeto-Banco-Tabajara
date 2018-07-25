@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ws-BancoTabajara.Domain", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ws-BancoTabajara.Infra", "Ws-BancoTabajara.Infra\Ws-BancoTabajara.Infra.csproj", "{FEBB65C1-1347-4474-A8E6-1D455C0DB8E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ws-BancoTabajara.Infra.ORM", "Ws-BancoTabajara.Infra.ORM\Ws-BancoTabajara.Infra.ORM.csproj", "{7FBFF553-9040-4BF0-BA51-71C440B63E1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{FEBB65C1-1347-4474-A8E6-1D455C0DB8E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEBB65C1-1347-4474-A8E6-1D455C0DB8E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEBB65C1-1347-4474-A8E6-1D455C0DB8E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FBFF553-9040-4BF0-BA51-71C440B63E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FBFF553-9040-4BF0-BA51-71C440B63E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FBFF553-9040-4BF0-BA51-71C440B63E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FBFF553-9040-4BF0-BA51-71C440B63E1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,5 +51,9 @@ Global
 		{4940FDD3-C2B0-440A-A595-90A78AA285ED} = {39ADB40E-B2A5-4E08-A513-6F046A5D08DB}
 		{A557824B-9540-4B4E-BA32-CED5AE623208} = {B37AF6D9-5983-4C5C-A777-78283F12C2D0}
 		{FEBB65C1-1347-4474-A8E6-1D455C0DB8E9} = {0C1B5779-4D57-454D-A9DD-07C36F1CB017}
+		{7FBFF553-9040-4BF0-BA51-71C440B63E1C} = {0C1B5779-4D57-454D-A9DD-07C36F1CB017}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D6DFBFE6-048D-42C2-B263-CEB8448809DC}
 	EndGlobalSection
 EndGlobal
