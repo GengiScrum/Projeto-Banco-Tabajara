@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A557824B-9540-4B4E-BA32-CED5AE623208}</ProjectGuid>
+    <ProjectGuid>{7FBFF553-9040-4BF0-BA51-71C440B63E1C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ws_BancoTabajara.Domain</RootNamespace>
-    <AssemblyName>Ws-BancoTabajara.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>Ws_BancoTabajara.Infra.ORM</RootNamespace>
+    <AssemblyName>Ws-BancoTabajara.Infra.ORM</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,7 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,25 +47,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity.cs" />
-    <Compile Include="Exceptions\BusinessException.cs" />
-    <Compile Include="Exceptions\ErrorCodes.cs" />
-    <Compile Include="Exceptions\NotFoundEsception.cs" />
-    <Compile Include="Features\BankAccounts\BankAccount.cs" />
-    <Compile Include="Features\Clients\Client.cs" />
-    <Compile Include="Features\Clients\IClientRepository.cs" />
-    <Compile Include="Features\Transactions\OperationTypeEnum.cs" />
-    <Compile Include="Features\Transactions\Transaction.cs" />
+    <Compile Include="Base\Context.cs" />
+    <Compile Include="Features\ClientConfiguration.cs" />
+    <Compile Include="Features\ClientRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <ProjectReference Include="..\Ws-BancoTabajara.Domain\Ws-BancoTabajara.Domain.csproj">
+      <Project>{A557824B-9540-4B4E-BA32-CED5AE623208}</Project>
+      <Name>Ws-BancoTabajara.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ws-BancoTabajara.Infra\Ws-BancoTabajara.Infra.csproj">
-      <Project>{FEBB65C1-1347-4474-A8E6-1D455C0DB8E9}</Project>
-      <Name>Ws-BancoTabajara.Infra</Name>
-    </ProjectReference>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
