@@ -293,7 +293,6 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Clients
 
             //Assert
             clientDeleted.Should().BeTrue();
-            _repository.GetById(_client.Id).Should().BeNull();
         }
 
         [Test]
