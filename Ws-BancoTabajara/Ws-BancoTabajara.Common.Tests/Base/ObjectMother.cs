@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.Clients;
-using Ws_BancoTabajara.Domain.Features.Transactions;
 
 namespace Ws_BancoTabajara.Common.Tests.Base
 {
@@ -169,39 +168,6 @@ namespace Ws_BancoTabajara.Common.Tests.Base
                 BirthDate = DateTime.Now.AddYears(-20),
                 RG = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 CPF = "567.123.345-76"
-            };
-        }
-        #endregion
-        #region Transaction
-        public static Transaction ValidCreditTransaction(BankAccount bankAccount)
-        {
-            return new Transaction
-            {
-                BankAccount = bankAccount,
-                Date = DateTime.Now,
-                Value = 100,
-                OperationType = OperationTypeEnum.Credit
-            };
-        }
-
-        public static Transaction TransactionWithoutBankAccount()
-        {
-            return new Transaction
-            {
-                Date = DateTime.Now,
-                Value = 100,
-                OperationType = OperationTypeEnum.Credit
-            };
-        }
-
-        public static Transaction TransactionInvalidValue(BankAccount bankAccount)
-        {
-            return new Transaction
-            {
-                BankAccount = bankAccount,
-                Date = DateTime.Now,
-                Value = 0,
-                OperationType = OperationTypeEnum.Credit
             };
         }
         #endregion

@@ -79,10 +79,11 @@
   <ItemGroup>
     <Compile Include="Features\BankAccounts\BankAccountTest.cs" />
     <Compile Include="Features\Clients\ClientTest.cs" />
-    <Compile Include="Features\Transactions\TransactionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Features\Transactions\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

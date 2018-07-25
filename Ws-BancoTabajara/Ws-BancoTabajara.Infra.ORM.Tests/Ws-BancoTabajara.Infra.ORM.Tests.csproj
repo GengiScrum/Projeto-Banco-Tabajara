@@ -82,12 +82,13 @@
     <Compile Include="Context\FakeDbContext.cs" />
     <Compile Include="Features\BankAccounts\BankAccountRepositoryTests.cs" />
     <Compile Include="Features\Clients\ClientRepositoryTests.cs" />
-    <Compile Include="Features\Transactions\TransactionRepositoryTests.cs" />
     <Compile Include="Initializer\EffortProviderFactory.cs" />
     <Compile Include="Initializer\EffortTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Features\Transactions\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

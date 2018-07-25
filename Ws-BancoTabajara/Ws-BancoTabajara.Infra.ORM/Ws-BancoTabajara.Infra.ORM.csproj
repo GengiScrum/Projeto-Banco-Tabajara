@@ -52,8 +52,6 @@
     <Compile Include="Features\BankAccounts\BankAccountRepository.cs" />
     <Compile Include="Features\Clients\ClientConfiguration.cs" />
     <Compile Include="Features\Clients\ClientRepository.cs" />
-    <Compile Include="Features\Transactions\TransactionConfiguration.cs" />
-    <Compile Include="Features\Transactions\TransactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
