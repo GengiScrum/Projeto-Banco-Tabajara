@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,8 +31,16 @@ namespace Ws_BancoTabajara.Api.Controllers.Common
 
         protected IHttpActionResult HandleQuery<TResult>(IQueryable<TResult> query)
         {
-            if (Request.Headers.Accept.Contains(MediaTypeWithQualityHeaderValue.Parse(MediaTypes.Csv)))
-                return ResponseMessage(HandleCSVFile(query));
+            //if (Request.Headers.Accept.Contains(MediaTypeWithQualityHeaderValue.Parse(MediaTypes.Csv)))
+            //    return ResponseMessage(HandleCSVFile(query));
+
+            return Ok(query.ToList());
+        }
+
+        protected IHttpActionResult HandleQueryable<TSource>(IQueryable<TSource> query)
+        {
+            //if (Request.Headers.Accept.Contains(MediaTypeWithQualityHeaderValue.Parse(MediaTypes.Csv)))
+            //    return ResponseMessage(HandleCSVFile(query));
 
             return Ok(query.ToList());
         }
@@ -44,21 +53,26 @@ namespace Ws_BancoTabajara.Api.Controllers.Common
                 Content(HttpStatusCode.InternalServerError, exceptionPayload);
         }
 
-        private HttpResponseMessage HandleCSVFile<TResult>(IQueryable<TResult> query)
+        protected IHttpActionResult HandleValidationFailure<T>(IList<T> validationFailure) where T : ValidationFailure
         {
-            var csv = query.ToCsv<TResult>(";");
-            var bytes = Encoding.UTF8.GetBytes(csv);
-            var stream = new MemoryStream(bytes, 0, bytes.Length, false, true);
-
-            var result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(stream.GetBuffer()) };
-
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            {
-                FileName = string.Format("export{0}.csv", DateTime.UtcNow.ToString("yyyyMMddhhmmss"))
-            };
-
-            return result;
+            return Content(HttpStatusCode.BadRequest, validationFailure);
         }
+
+        //private HttpResponseMessage HandleCSVFile<TResult>(IQueryable<TResult> query)
+        //{
+        //    var csv = query.ToCsv<TResult>(";");
+        //    var bytes = Encoding.UTF8.GetBytes(csv);
+        //    var stream = new MemoryStream(bytes, 0, bytes.Length, false, true);
+
+        //    var result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(stream.GetBuffer()) };
+
+        //    result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+        //    result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+        //    {
+        //        FileName = string.Format("export{0}.csv", DateTime.UtcNow.ToString("yyyyMMddhhmmss"))
+        //    };
+
+        //    return result;
+        //}
     }
 }

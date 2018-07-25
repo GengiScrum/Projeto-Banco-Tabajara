@@ -5,20 +5,22 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.Clients;
 
 namespace Ws_BancoTabajara.Infra.ORM.Base
 {
-    public class Context : DbContext
+    public class BancoTabajaraDbContext : DbContext
     {
-        public Context(string connection = "Name=GengiScrum_DBWS")
+        public BancoTabajaraDbContext(string connection = "Name=GengiScrum_DBWS")
         {
             this.Configuration.LazyLoadingEnabled = true;
         }
 
-        protected Context(DbConnection connection) : base(connection, true) { }
+        protected BancoTabajaraDbContext(DbConnection connection) : base(connection, true) { }
 
         public DbSet<Client> Clients { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

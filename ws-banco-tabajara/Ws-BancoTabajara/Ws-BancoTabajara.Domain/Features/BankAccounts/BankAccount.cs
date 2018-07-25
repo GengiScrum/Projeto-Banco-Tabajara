@@ -9,6 +9,11 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
 {
     public class BankAccount : Entity
     {
+        public BankAccount()
+        {
+            Transactions = new List<Transaction>();
+        }
+
         public int Number { get; set; }
         public Client Client { get; set; }
         public double Balance { get; set; }
@@ -19,7 +24,20 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
 
         public override void Validate()
         {
-            throw new NotImplementedException();
+            if (Number <= 0) throw new BankAccountInvalidNumberException();
+            if (Client == null) throw new BankAccountWithoutClientException();
+
+            Client.Validate();
+        }
+
+        public void Activate()
+        {
+            Activated = true;
+        }
+
+        public void Deactivate()
+        {
+            Activated = false;
         }
     }
 }

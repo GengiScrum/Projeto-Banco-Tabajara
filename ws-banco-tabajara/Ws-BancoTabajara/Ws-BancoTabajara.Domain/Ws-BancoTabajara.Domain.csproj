@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ws_BancoTabajara.Domain</RootNamespace>
     <AssemblyName>Ws-BancoTabajara.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,10 +44,21 @@
     <Compile Include="Entity.cs" />
     <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\ErrorCodes.cs" />
-    <Compile Include="Exceptions\NotFoundEsception.cs" />
+    <Compile Include="Exceptions\IdentifierUndefinedException.cs" />
+    <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Features\BankAccounts\BankAccount.cs" />
+    <Compile Include="Features\BankAccounts\BankAccountInvalidNumberException.cs" />
+    <Compile Include="Features\BankAccounts\BankAccountWithoutClientException.cs" />
+    <Compile Include="Features\BankAccounts\IBankAccountRepository.cs" />
     <Compile Include="Features\Clients\Client.cs" />
+    <Compile Include="Features\Clients\ClientNullOrEmptyCPFException.cs" />
+    <Compile Include="Features\Clients\ClientNullOrEmptyNameException.cs" />
+    <Compile Include="Features\Clients\ClientCPFOverflowException.cs" />
+    <Compile Include="Features\Clients\ClientNameOverflowException.cs" />
+    <Compile Include="Features\Clients\ClientNullOrEmptyRGException.cs" />
+    <Compile Include="Features\Clients\ClientRGOverflowException.cs" />
     <Compile Include="Features\Clients\IClientRepository.cs" />
+    <Compile Include="Features\Clients\IClientService.cs" />
     <Compile Include="Features\Transactions\OperationTypeEnum.cs" />
     <Compile Include="Features\Transactions\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -7,19 +7,20 @@ using Ws_BancoTabajara.Domain.Exceptions;
 using Ws_BancoTabajara.Domain.Features.Clients;
 using Ws_BancoTabajara.Infra.ORM.Base;
 
-namespace Ws_BancoTabajara.Infra.ORM.Features
+namespace Ws_BancoTabajara.Infra.ORM.Features.Clients
 {
     public class ClientRepository : IClientRepository
     {
-        private Context _context;
+        private BancoTabajaraDbContext _context;
 
-        public ClientRepository(Context context)
+        public ClientRepository(BancoTabajaraDbContext context)
         {
             _context = context;
         }
 
         public Client Add(Client client)
         {
+            client.Validate();
             var newClient = _context.Clients.Add(client);
             _context.SaveChanges();
             return newClient;
@@ -32,22 +33,33 @@ namespace Ws_BancoTabajara.Infra.ORM.Features
 
         public Client GetById(int clientId)
         {
-            return _context.Clients.Where(c => c.Id == clientId).FirstOrDefault();
+            if (clientId == 0)
+                throw new IdentifierUndefinedException();
+
+            var clientFound = _context.Clients.Where(c => c.Id == clientId).FirstOrDefault();
+
+            if (clientFound == null)
+                throw new NotFoundException();
+
+            return clientFound;
         }
 
         public bool Remove(int clientId)
         {
-            var client = _context.Clients.Where(c => c.Id == clientId).FirstOrDefault();
+            if (clientId == 0)
+                throw new IdentifierUndefinedException();
+            var client = GetById(clientId);
             if (client == null)
-                throw new NotFoundEsception();
+                throw new NotFoundException();
             _context.Clients.Remove(client);
             return _context.SaveChanges() > 0;
         }
 
         public bool Update(Client client)
         {
-            var alteredClient = _context.Clients.Where(c => c.Id == client.Id).FirstOrDefault();
-            alteredClient = client;
+            client.Validate();
+            var oldClient = GetById(client.Id);
+            oldClient = client;
             return _context.SaveChanges() > 0;
         }
     }
