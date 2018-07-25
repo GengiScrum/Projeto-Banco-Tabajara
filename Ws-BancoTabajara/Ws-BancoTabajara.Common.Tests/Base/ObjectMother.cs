@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.Clients;
+using Ws_BancoTabajara.Domain.Features.Transactions;
 
 namespace Ws_BancoTabajara.Common.Tests.Base
 {
@@ -84,6 +85,7 @@ namespace Ws_BancoTabajara.Common.Tests.Base
             };
         }
         #endregion
+
         #region Client
         public static Client ValidClientWithoutId()
         {
@@ -170,6 +172,42 @@ namespace Ws_BancoTabajara.Common.Tests.Base
                 CPF = "567.123.345-76"
             };
         }
+        #endregion
+
+        #region Transaction
+
+        public static Transaction ValidCreditTransaction(BankAccount bankAccount)
+        {
+            return new Transaction
+            {
+                BankAccount = bankAccount,
+                Date = DateTime.Now,
+                OperationType = OperationTypeEnum.Credit,
+                Value = 500
+            };
+        }
+
+        public static Transaction TransactionInvalidValue(BankAccount bankAccount)
+        {
+            return new Transaction
+            {
+                BankAccount = bankAccount,
+                Date = DateTime.Now,
+                OperationType = OperationTypeEnum.Credit,
+                Value = 0
+            };
+        }
+
+        public static Transaction TransactionWithoutBankAccount()
+        {
+            return new Transaction
+            {
+                Date = DateTime.Now,
+                OperationType = OperationTypeEnum.Credit,
+                Value = 500
+            };
+        }
+
         #endregion
     }
 }
