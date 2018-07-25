@@ -4,11 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A557824B-9540-4B4E-BA32-CED5AE623208}</ProjectGuid>
+    <ProjectGuid>{5F93F6F4-C930-455E-95A8-E692A1F7B5F0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+<<<<<<< HEAD:ws-banco-tabajara/Ws-BancoTabajara/Ws-BancoTabajara.Domain/Ws-BancoTabajara.Domain.csproj:ws-banco-tabajara/Ws-BancoTabajara/Ws-BancoTabajara.Domain/Ws-BancoTabajara.Domain.csproj
     <RootNamespace>Ws_BancoTabajara.Domain</RootNamespace>
     <AssemblyName>Ws-BancoTabajara.Domain</AssemblyName>
+=======
+    <RootNamespace>Ws_BancoTabajara.Applications</RootNamespace>
+    <AssemblyName>Ws-BancoTabajara.Applications</AssemblyName>
+>>>>>>> master:Ws-BancoTabajara/Ws-BancoTabajara.Applications/Ws-BancoTabajara.Applications.csproj:Ws-BancoTabajara/Ws-BancoTabajara.Applications/Ws-BancoTabajara.Applications.csproj
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -41,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD:ws-banco-tabajara/Ws-BancoTabajara/Ws-BancoTabajara.Domain/Ws-BancoTabajara.Domain.csproj:ws-banco-tabajara/Ws-BancoTabajara/Ws-BancoTabajara.Domain/Ws-BancoTabajara.Domain.csproj
     <Compile Include="Entity.cs" />
     <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\ErrorCodes.cs" />
@@ -61,16 +67,20 @@
     <Compile Include="Features\Clients\IClientService.cs" />
     <Compile Include="Features\Transactions\OperationTypeEnum.cs" />
     <Compile Include="Features\Transactions\Transaction.cs" />
+=======
+    <Compile Include="Features\Clients\ClientService.cs" />
+>>>>>>> master:Ws-BancoTabajara/Ws-BancoTabajara.Applications/Ws-BancoTabajara.Applications.csproj:Ws-BancoTabajara/Ws-BancoTabajara.Applications/Ws-BancoTabajara.Applications.csproj
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <ProjectReference Include="..\Ws-BancoTabajara.Domain\Ws-BancoTabajara.Domain.csproj">
+      <Project>{A557824B-9540-4B4E-BA32-CED5AE623208}</Project>
+      <Name>Ws-BancoTabajara.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ws-BancoTabajara.Infra\Ws-BancoTabajara.Infra.csproj">
-      <Project>{FEBB65C1-1347-4474-A8E6-1D455C0DB8E9}</Project>
-      <Name>Ws-BancoTabajara.Infra</Name>
-    </ProjectReference>
+    <Folder Include="Features\BankAccounts\" />
+    <Folder Include="Features\Transactions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

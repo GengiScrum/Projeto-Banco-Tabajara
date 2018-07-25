@@ -15,7 +15,8 @@ namespace Ws_BancoTabajara.Domain.Features.Transactions
 
         public override void Validate()
         {
-            throw new NotImplementedException();
+            if (Value == 0) throw new TransactionInvalidValueException();
+            if (BankAccount == null) throw new TransactionNullBankAccount();
         }
     }
 }
