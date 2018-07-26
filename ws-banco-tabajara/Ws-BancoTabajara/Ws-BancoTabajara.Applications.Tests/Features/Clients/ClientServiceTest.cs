@@ -36,11 +36,11 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.Clients
             _mockClientRepository.Setup(cr => cr.Add(_client)).Returns(_client);
 
             //Action
-            Client addedClient = _clientService.Add(_client);
+            int addedClientId = _clientService.Add(_client);
 
             //Assert
             _mockClientRepository.Verify(cr => cr.Add(_client));
-            addedClient.Should().Be(_client);
+            addedClientId.Should().Be(_client.Id);
         }
 
         [Test]
@@ -251,12 +251,12 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.Clients
         public void Client_Applications_GetById_ShouldBeOk()
         {
             //Arrange
-            _client = ObjectMother.ValidClientWithoutId();
-            _client.Id = 1;
-            _mockClientRepository.Setup(cr => cr.GetById(_client.Id)).Returns(_client);
+            _client = ObjectMother.ValidClientWithId();
+            var clientId = 1;
+            _mockClientRepository.Setup(cr => cr.GetById(clientId)).Returns(_client);
 
             //Action
-            Client getClient = _clientService.GetById(_client);
+            Client getClient = _clientService.GetById(clientId);
 
             //Assert
             _mockClientRepository.Verify(cr => cr.GetById(_client.Id));
@@ -270,7 +270,7 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.Clients
             _client = ObjectMother.ValidClientWithoutId();
 
             //Action
-            Action act = () => _clientService.GetById(_client);
+            Action act = () => _clientService.GetById(_client.Id);
 
             //Assert
             _mockClientRepository.VerifyNoOtherCalls();

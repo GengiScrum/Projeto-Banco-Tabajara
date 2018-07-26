@@ -19,7 +19,7 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
         public double Balance { get; set; }
         public bool Activated { get; set; }
         public double Limit { get; set; }
-        public double TotalBalance { get { return Limit + Balance; } private set { } }
+        public double TotalBalance { get { return Balance + Limit; } private set { } }
         public ICollection<Transaction> Transactions { get; set; }
 
         public override void Validate()
@@ -30,14 +30,29 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
             Client.Validate();
         }
 
-        public void Activate()
+        public void ChangeActivation()
         {
-            Activated = true;
+            if (Activated)
+                this.Activated = false;
+            else
+                this.Activated = true;
         }
 
-        public void Deactivate()
+        public void Withdraw(double value)
         {
-            Activated = false;
+            if (value <= 0) throw new BankAccountInvalidTransactionValueException();
+
+            if (value > TotalBalance)
+                throw new BankAccountWhitdrawValueHigherThanTotalBalanceException();
+
+            this.Balance -= value;
+        }
+
+        public void Deposit(double value)
+        {
+            if (value <= 0) throw new BankAccountInvalidTransactionValueException();
+
+            this.Balance += value;
         }
     }
 }

@@ -47,9 +47,13 @@
     <Compile Include="Exceptions\IdentifierUndefinedException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Features\BankAccounts\BankAccount.cs" />
+    <Compile Include="Features\BankAccounts\BankAccountInvalidTransactionValueException.cs" />
     <Compile Include="Features\BankAccounts\BankAccountInvalidNumberException.cs" />
+    <Compile Include="Features\BankAccounts\BankAccountWhitdrawValueHigherThanTotalBalanceException.cs" />
     <Compile Include="Features\BankAccounts\BankAccountWithoutClientException.cs" />
     <Compile Include="Features\BankAccounts\IBankAccountRepository.cs" />
+    <Compile Include="Features\BankAccounts\IBankAccountService.cs" />
+    <Compile Include="Features\BankStatements\BankStatement.cs" />
     <Compile Include="Features\Clients\Client.cs" />
     <Compile Include="Features\Clients\ClientNullOrEmptyCPFException.cs" />
     <Compile Include="Features\Clients\ClientNullOrEmptyNameException.cs" />
@@ -59,8 +63,11 @@
     <Compile Include="Features\Clients\ClientRGOverflowException.cs" />
     <Compile Include="Features\Clients\IClientRepository.cs" />
     <Compile Include="Features\Clients\IClientService.cs" />
+    <Compile Include="Features\Transactions\ITransactionRepository.cs" />
     <Compile Include="Features\Transactions\OperationTypeEnum.cs" />
     <Compile Include="Features\Transactions\Transaction.cs" />
+    <Compile Include="Features\Transactions\TransactionInvalidValueException.cs" />
+    <Compile Include="Features\Transactions\TransactionNullBankAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

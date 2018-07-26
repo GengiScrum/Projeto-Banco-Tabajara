@@ -69,9 +69,10 @@ namespace Ws_BancoTabajara.Domain.Tests.Features.BankAccounts
         {
             //Arrange
             _bankAccount = ObjectMother.ValidDeactivatedBankAccountWithoutId(_mockClient.Object);
+            _bankAccount.Activated = false;
 
             //Action
-            _bankAccount.Activate();
+            _bankAccount.ChangeActivation();
 
             //Assert
             _bankAccount.Activated.Should().BeTrue();
@@ -82,12 +83,89 @@ namespace Ws_BancoTabajara.Domain.Tests.Features.BankAccounts
         {
             //Arrange
             _bankAccount = ObjectMother.ValidActivatedBankAccountWithoutId(_mockClient.Object);
+            _bankAccount.Activated = true;
 
             //Action
-            _bankAccount.Deactivate();
+            _bankAccount.ChangeActivation();
 
             //Assert
             _bankAccount.Activated.Should().BeFalse();
+        }
+
+        [Test]
+        public void BankAccount_Domain_Withdraw_ShouldBeOk()
+        {
+            //arrange
+            _bankAccount = ObjectMother.ValidActivatedBankAccountWithoutId(_mockClient.Object);
+            double value = 700;
+            double expectedBalance = -400;
+            double expectedTotalBalance = 100;
+
+            //action
+            _bankAccount.Withdraw(value);
+
+            //assert
+            _bankAccount.Balance.Should().Be(expectedBalance);
+            _bankAccount.TotalBalance.Should().Be(expectedTotalBalance);
+        }
+
+        [Test]
+        public void BankAccount_Domain_Withdraw_ShouldThrowBankAccountWhitdrawValueHigherThanTotalBalanceException()
+        {
+            //Arrange
+            _bankAccount = ObjectMother.ValidActivatedBankAccountWithoutId(_mockClient.Object);
+            double value = 900;
+
+            //Action
+            Action act = () => _bankAccount.Withdraw(value);
+
+            //Assert
+            act.Should().Throw<BankAccountWhitdrawValueHigherThanTotalBalanceException>();
+        }
+
+        [Test]
+        public void BankAccount_Domain_Withdraw_ShouldThrowBankAccountInvalidTransactionValueException()
+        {
+            //Arrange
+            _bankAccount = ObjectMother.ValidActivatedBankAccountWithoutId(_mockClient.Object);
+            double value = -900;
+
+            //Action
+            Action act = () => _bankAccount.Withdraw(value);
+
+            //Assert
+            act.Should().Throw<BankAccountInvalidTransactionValueException>();
+        }
+
+        [Test]
+        public void BankAccount_Domain_Deposite_ShouldBeOk()
+        {
+            //arrange
+            _bankAccount = ObjectMother.ValidActivatedBankAccountWithoutId(_mockClient.Object);
+            double value = 100;
+            double expectedBalance = 400;
+            double expectedTotalBalance = 900;
+
+            //action
+            _bankAccount.Deposit(value);
+
+            //assert
+            _bankAccount.Balance.Should().Be(expectedBalance);
+            _bankAccount.TotalBalance.Should().Be(expectedTotalBalance);
+        }
+
+        [Test]
+        public void BankAccount_Domain_Deposite_ShouldThrowBankAccountInvalidTransactionValueException()
+        {
+            //Arrange
+            _bankAccount = ObjectMother.ValidActivatedBankAccountWithoutId(_mockClient.Object);
+            double value = -900;
+
+            //Action
+            Action act = () => _bankAccount.Deposit(value);
+
+            //Assert
+            act.Should().Throw<BankAccountInvalidTransactionValueException>();
         }
     }
 }

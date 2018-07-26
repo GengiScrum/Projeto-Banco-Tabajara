@@ -57,22 +57,5 @@ namespace Ws_BancoTabajara.Api.Controllers.Common
         {
             return Content(HttpStatusCode.BadRequest, validationFailure);
         }
-
-        //private HttpResponseMessage HandleCSVFile<TResult>(IQueryable<TResult> query)
-        //{
-        //    var csv = query.ToCsv<TResult>(";");
-        //    var bytes = Encoding.UTF8.GetBytes(csv);
-        //    var stream = new MemoryStream(bytes, 0, bytes.Length, false, true);
-
-        //    var result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(stream.GetBuffer()) };
-
-        //    result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-        //    result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-        //    {
-        //        FileName = string.Format("export{0}.csv", DateTime.UtcNow.ToString("yyyyMMddhhmmss"))
-        //    };
-
-        //    return result;
-        //}
     }
 }

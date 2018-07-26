@@ -36,10 +36,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Clients
             if (clientId == 0)
                 throw new IdentifierUndefinedException();
 
-            var clientFound = _context.Clients.Where(c => c.Id == clientId).FirstOrDefault();
-
-            if (clientFound == null)
-                throw new NotFoundException();
+            var clientFound = _context.Clients.Where(c => c.Id == clientId).FirstOrDefault() ?? throw new NotFoundException();
 
             return clientFound;
         }
@@ -49,14 +46,14 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Clients
             if (clientId == 0)
                 throw new IdentifierUndefinedException();
             var client = GetById(clientId);
-            if (client == null)
-                throw new NotFoundException();
             _context.Clients.Remove(client);
             return _context.SaveChanges() > 0;
         }
 
         public bool Update(Client client)
         {
+            if (client.Id == 0)
+                throw new IdentifierUndefinedException();
             client.Validate();
             var oldClient = GetById(client.Id);
             oldClient = client;

@@ -103,6 +103,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Common\ApiControllerBase.cs" />
     <Compile Include="Controllers\Common\PublicController.cs" />
+    <Compile Include="Controllers\Features\BankAccounts\BankAccountController.cs" />
+    <Compile Include="Controllers\Features\Clients\ClientController.cs" />
     <Compile Include="Exceptions\ExceptionPayload.cs" />
     <Compile Include="Extensions\ExceptionHandlingExtensions.cs" />
     <Compile Include="Filters\ExceptionHandlerAttribute.cs" />
@@ -124,9 +126,17 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Ws-BancoTabajara.Applications\Ws-BancoTabajara.Applications.csproj">
+      <Project>{5F93F6F4-C930-455E-95A8-E692A1F7B5F0}</Project>
+      <Name>Ws-BancoTabajara.Applications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ws-BancoTabajara.Domain\Ws-BancoTabajara.Domain.csproj">
       <Project>{A557824B-9540-4B4E-BA32-CED5AE623208}</Project>
       <Name>Ws-BancoTabajara.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ws-BancoTabajara.Infra.ORM\Ws-BancoTabajara.Infra.ORM.csproj">
+      <Project>{7FBFF553-9040-4BF0-BA51-71C440B63E1C}</Project>
+      <Name>Ws-BancoTabajara.Infra.ORM</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

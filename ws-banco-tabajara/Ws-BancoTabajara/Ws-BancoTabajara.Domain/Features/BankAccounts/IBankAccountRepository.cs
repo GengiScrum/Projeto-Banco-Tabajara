@@ -13,5 +13,6 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
         bool Update(BankAccount bankAccount);
         BankAccount GetById(int bankAccountId);
         bool Remove(int bankAccountId);
+        bool SaveChanges();
     }
 }

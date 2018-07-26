@@ -9,6 +9,11 @@ namespace Ws_BancoTabajara.Domain.Exceptions
     public enum ErrorCodes
     {
         /// <summary>
+        /// BadRequest: O pedido não pôde ser entregue devido à sintaxe incorreta.
+        /// </summary>
+        BadRequest = 400,
+
+        /// <summary>
         /// Unauthorized: Não autorizado, a diferença para 403 é que o usuário não está autenticado.
         /// </summary>
         Unauthorized = 401,

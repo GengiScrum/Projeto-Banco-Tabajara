@@ -17,11 +17,11 @@ namespace Ws_BancoTabajara.Applications.Features.Clients
             _clientRepository = clientRepository;
         }
 
-        public Client Add(Client client)
+        public int Add(Client client)
         {
             client.Validate();
 
-            return _clientRepository.Add(client);
+            return _clientRepository.Add(client).Id;
         }
 
         public IQueryable<Client> GetAll()
@@ -29,12 +29,12 @@ namespace Ws_BancoTabajara.Applications.Features.Clients
             return _clientRepository.GetAll();
         }
 
-        public Client GetById(Client client)
+        public Client GetById(int clientId)
         {
-            if (client.Id == 0)
+            if (clientId == 0)
                 throw new IdentifierUndefinedException();
 
-            return _clientRepository.GetById(client.Id);
+            return _clientRepository.GetById(clientId);
         }
 
         public bool Remove(Client client)

@@ -22,6 +22,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
         {
             bankAccount.Validate();
             _context.BankAccounts.Add(bankAccount);
+            SaveChanges();
             return bankAccount;
         }
 
@@ -35,10 +36,8 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
             if (bankAccountId == 0)
                 throw new IdentifierUndefinedException();
 
-            var bankAccountFound = _context.BankAccounts.Where(ba => ba.Id == bankAccountId).FirstOrDefault();
-
-            if (bankAccountFound == null)
-                throw new NotFoundException();
+            var bankAccountFound = _context.BankAccounts.Where(ba => ba.Id == bankAccountId).FirstOrDefault() 
+                                    ?? throw new NotFoundException();
 
             return bankAccountFound;
         }
@@ -47,19 +46,29 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
         {
             if (bankAccountId == 0)
                 throw new IdentifierUndefinedException();
+
             var bankAccount = GetById(bankAccountId);
-            if (bankAccount == null)
-                throw new NotFoundException();
+
             _context.BankAccounts.Remove(bankAccount);
+            return SaveChanges();
+        }
+
+        public bool SaveChanges()
+        {
             return _context.SaveChanges() > 0;
         }
 
         public bool Update(BankAccount bankAccount)
         {
+            if (bankAccount.Id == 0)
+                throw new IdentifierUndefinedException();
+
             bankAccount.Validate();
+
             var updatedBankAccount = GetById(bankAccount.Id);
+
             updatedBankAccount = bankAccount;
-            return _context.SaveChanges() > 0;
+            return SaveChanges();
         }
     }
 }
