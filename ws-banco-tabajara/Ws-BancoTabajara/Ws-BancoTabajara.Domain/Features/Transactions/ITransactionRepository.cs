@@ -9,6 +9,6 @@ namespace Ws_BancoTabajara.Domain.Features.Transactions
     public interface ITransactionRepository
     {
         Transaction Add(Transaction transaction);
-        Transaction GetById(int id);
+        ICollection<Transaction> GetById(int id);
     }
 }
