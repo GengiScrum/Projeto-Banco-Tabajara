@@ -57,8 +57,12 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Clients
 
         public bool Update(Client client)
         {
+            if (client.Id == 0)
+                throw new IdentifierUndefinedException();
             client.Validate();
             var oldClient = GetById(client.Id);
+            if (oldClient == null)
+                throw new NotFoundException();
             oldClient = client;
             return _context.SaveChanges() > 0;
         }

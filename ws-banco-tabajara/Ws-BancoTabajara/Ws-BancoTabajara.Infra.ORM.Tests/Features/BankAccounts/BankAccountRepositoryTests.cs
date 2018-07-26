@@ -19,7 +19,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.BankAccounts
     public class BankAccountRepositoryTests : EffortTestBase
     {
         private FakeDbContext _context;
-        private BankAccountRepository _repository;
+        private IBankAccountRepository _repository;
         private BankAccount _bankAccount;
         private BankAccount _bankAccountSeed;
 
@@ -78,6 +78,86 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.BankAccounts
 
             //Action
             Action act = () => _repository.GetById(notFoundId);
+
+            //Assert
+            act.Should().Throw<NotFoundException>();
+        }
+
+        [Test]
+        public void BankAccount_Repository_Remove_ShouldBeOk()
+        {
+            //Action
+            var wasRemoved = _repository.Remove(_bankAccount.Id);
+
+            //Assert
+            wasRemoved.Should().BeTrue();
+            _context.BankAccounts.Where(b => b.Id == _bankAccount.Id).ToList().Should().BeNullOrEmpty();
+        }
+
+        [Test]
+        public void BankAccount_Repository_Remove_ShouldThrowIdentifierUndefinedException()
+        {
+            //Arrange
+            int undefinedId = 0;
+
+            //Action
+            Action act = () => _repository.Remove(undefinedId);
+
+            //Assert
+            act.Should().Throw<IdentifierUndefinedException>();
+        }
+
+        [Test]
+        public void BankAccount_Repository_Remove_ShouldThrowNotFoundException()
+        {
+            //Arrange
+            int notFoundId = 10;
+
+            //Action
+            Action act = () => _repository.Remove(notFoundId);
+
+            //Assert
+            act.Should().Throw<NotFoundException>();
+        }
+
+        [Test]
+        public void BankAccount_Repository_Update_ShouldBeOk()
+        {
+            //Assert
+            int number = 1;
+            _bankAccount.Number = number;
+
+            //Action
+            var wasUpdated = _repository.Update(_bankAccount);
+
+            //Assert
+            wasUpdated.Should().BeTrue();
+            _repository.GetById(_bankAccount.Id).Number.Should().Be(number);
+        }
+
+        [Test]
+        public void BankAccount_Repository_Update_ShouldThrowIdentifierUndefinedException()
+        {
+            //Arrange
+            int undefinedId = 0;
+            _bankAccount.Id = undefinedId;
+
+            //Action
+            Action act = () => _repository.Update(_bankAccount);
+
+            //Assert
+            act.Should().Throw<IdentifierUndefinedException>();
+        }
+
+        [Test]
+        public void BankAccount_Repository_Update_ShouldThrowNotFoundException()
+        {
+            //Arrange
+            int notFoundId = 10;
+            _bankAccount.Id = notFoundId;
+
+            //Action
+            Action act = () => _repository.Update(_bankAccount);
 
             //Assert
             act.Should().Throw<NotFoundException>();

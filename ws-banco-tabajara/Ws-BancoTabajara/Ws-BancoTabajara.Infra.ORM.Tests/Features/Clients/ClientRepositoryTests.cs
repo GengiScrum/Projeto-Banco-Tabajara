@@ -133,8 +133,8 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Clients
         public void Client_Repository_Update_ShouldBeOk()
         {
             //Arrange
-            _client.Id = 1;
-            _client = _repository.GetById(_client.Id);
+            int id = 1;
+            _client = _repository.GetById(id);
             _client.Name = "Neide";
 
             //Action

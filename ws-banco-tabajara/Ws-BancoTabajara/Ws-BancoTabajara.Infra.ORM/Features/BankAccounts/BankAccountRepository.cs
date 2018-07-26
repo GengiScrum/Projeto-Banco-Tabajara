@@ -47,17 +47,28 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
         {
             if (bankAccountId == 0)
                 throw new IdentifierUndefinedException();
+
             var bankAccount = GetById(bankAccountId);
+
             if (bankAccount == null)
                 throw new NotFoundException();
+
             _context.BankAccounts.Remove(bankAccount);
             return _context.SaveChanges() > 0;
         }
 
         public bool Update(BankAccount bankAccount)
         {
+            if (bankAccount.Id == 0)
+                throw new IdentifierUndefinedException();
+
             bankAccount.Validate();
+
             var updatedBankAccount = GetById(bankAccount.Id);
+
+            if (updatedBankAccount == null)
+                throw new NotFoundException();
+
             updatedBankAccount = bankAccount;
             return _context.SaveChanges() > 0;
         }
