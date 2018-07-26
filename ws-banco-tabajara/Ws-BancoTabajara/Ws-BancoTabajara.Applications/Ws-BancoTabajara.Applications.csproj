@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Features\BankAccounts\" />
-    <Folder Include="Features\Transactions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
