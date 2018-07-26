@@ -23,9 +23,9 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Transactions
             return transaction;
         }
 
-        public Transaction GetById(int id)
+        public ICollection<Transaction> GetByBankAccountId(int bankAccountId)
         {
-            return _context.Transactions.Find(id);
+            return _context.Transactions.Where(t => t.BankAccount.Id == bankAccountId).ToList();
         }
     }
 }

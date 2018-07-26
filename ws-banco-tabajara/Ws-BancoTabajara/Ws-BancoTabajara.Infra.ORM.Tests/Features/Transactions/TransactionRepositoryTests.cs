@@ -59,10 +59,10 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Transactions
             _transaction.Id = 1;
 
             //Action
-            Transaction getTransaction = _repository.GetById(_transaction.Id);
+            var getTransaction = _repository.GetByBankAccountId(_transaction.Id);
 
             //Assert
-            getTransaction.Should().Be(_transaction);
+            getTransaction.Last().Should().Be(_transaction);
         }
     }
 }
