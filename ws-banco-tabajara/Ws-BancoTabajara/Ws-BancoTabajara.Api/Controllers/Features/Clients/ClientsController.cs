@@ -13,11 +13,11 @@ using Ws_BancoTabajara.Infra.ORM.Features.Clients;
 namespace Ws_BancoTabajara.Api.Controllers.Features.Clients
 {
     [RoutePrefix("api/clients")]
-    public class ClientController : ApiControllerBase
+    public class ClientsController : ApiControllerBase
     {
         public IClientService _clientService;
 
-        public ClientController()
+        public ClientsController()
         {
             var context = new BancoTabajaraDbContext();
             var repository = new ClientRepository(context);

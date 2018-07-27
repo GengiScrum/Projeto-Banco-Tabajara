@@ -14,11 +14,11 @@ using Ws_BancoTabajara.Infra.ORM.Features.Transactions;
 namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
 {
     [RoutePrefix("api/bankaccounts")]
-    public class BankAccountController : ApiControllerBase
+    public class BankAccountsController : ApiControllerBase
     {
         public IBankAccountService _bankAccountsService;
 
-        public BankAccountController() : base()
+        public BankAccountsController() : base()
         {
             var context = new BancoTabajaraDbContext();
             var bankAccountRepository = new BankAccountRepository(context);
