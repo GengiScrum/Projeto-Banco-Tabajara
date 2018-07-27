@@ -27,7 +27,7 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         }
 
         [HttpGet]
-        public IHttpActionResult Get()
+        public IHttpActionResult GetAll()
         {
             var query = _bankAccountsService.GetAll();
             return HandleQueryable<BankAccount>(query);
@@ -41,7 +41,7 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         }
 
         [HttpPost]
-        public IHttpActionResult Post(BankAccount bankAccount)
+        public IHttpActionResult Add(BankAccount bankAccount)
         {
             return HandleCallback(() => _bankAccountsService.Add(bankAccount));
         }
@@ -53,7 +53,7 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         }
 
         [HttpDelete]
-        public IHttpActionResult Delete(BankAccount bankAccount)
+        public IHttpActionResult Remove(BankAccount bankAccount)
         {
             return HandleCallback(() => _bankAccountsService.Remove(bankAccount));
         }
