@@ -101,6 +101,7 @@
     <Compile Include="Common\ApiControllerBaseMockObjects.cs" />
     <Compile Include="Common\ApiControllerBaseTests.cs" />
     <Compile Include="Common\PublicControllerTests.cs" />
+    <Compile Include="Features\BankAccounts\BankAccountControllerTests.cs" />
     <Compile Include="Features\Clients\ClientControllerTests.cs" />
     <Compile Include="Initializer\TestControllerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

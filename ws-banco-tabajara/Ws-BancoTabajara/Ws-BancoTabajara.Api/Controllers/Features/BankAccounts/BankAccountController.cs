@@ -27,7 +27,7 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         }
 
         [HttpGet]
-        public IHttpActionResult Get()
+        public IHttpActionResult GetAll()
         {
             var query = _bankAccountsService.GetAll();
             return HandleQueryable<BankAccount>(query);
