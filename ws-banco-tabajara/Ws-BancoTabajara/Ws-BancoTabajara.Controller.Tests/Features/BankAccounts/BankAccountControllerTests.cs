@@ -19,7 +19,7 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
     [TestFixture]
     public class BankAccountControllerTests
     {
-        private BankAccountController _bankAccountController;
+        private BankAccountsController _bankAccountController;
         private Mock<IBankAccountService> _mockBankAccountService;
         private Mock<BankAccount> _mockBankAccount;
         private Mock<Client> _mockClient;
@@ -30,7 +30,7 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
             HttpRequestMessage request = new HttpRequestMessage();
             request.SetConfiguration(new HttpConfiguration());
             _mockBankAccountService = new Mock<IBankAccountService>();
-            _bankAccountController = new BankAccountController()
+            _bankAccountController = new BankAccountsController()
             {
                 Request = request,
                 _bankAccountsService = _mockBankAccountService.Object,

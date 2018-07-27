@@ -217,16 +217,19 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
         public void BankAccount_Applications_Withdraw_ShouldBeOk()
         {
             //Arrange
-            _mockTransactionRepository.Setup(tr => tr.Add(It.IsAny<Transaction>())).Returns(new Transaction { OperationType = OperationTypeEnum.Debit });
             _bankAccount = ObjectMother.BankAccountWithClientWithId();
+            _mockBankAccountRepository.Setup(b => b.GetById(_bankAccount.Id)).Returns(_bankAccount);
+            _mockBankAccountRepository.Setup(b => b.Update(_bankAccount)).Returns(true);
+            _mockTransactionRepository.Setup(tr => tr.Add(It.IsAny<Transaction>())).Returns(new Transaction { Id = 1, OperationType = OperationTypeEnum.Debit });
             double value = 700;
             double expectedBalance = -400;
             double expectedTotalBalance = 100;
 
             //Action
-            _bankAccountService.Withdraw(_bankAccount, value);
+            var withdraw = _bankAccountService.Withdraw(_bankAccount, value);
 
             //Assert
+            withdraw.Should().BeTrue();
             _mockBankAccountRepository.Verify(br => br.Update(_bankAccount));
             _mockTransactionRepository.Verify(tr => tr.Add(It.IsAny<Transaction>()));
             _bankAccount.TotalBalance.Should().Be(expectedTotalBalance);
@@ -239,7 +242,9 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
         public void BankAccount_Applications_Withdraw_ShouldThrowBankAccountWhitdrawValueHigherThanTotalBalanceException()
         {
             //Arrange
-            _bankAccount = ObjectMother.BankAccountWithClientWithoutId();
+            _bankAccount = ObjectMother.BankAccountWithClientWithId();
+            _mockBankAccountRepository.Setup(b => b.GetById(_bankAccount.Id)).Returns(_bankAccount);
+            _mockBankAccountRepository.Setup(b => b.Update(_bankAccount)).Returns(true);
             double value = 900;
 
             //Action
@@ -269,16 +274,19 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
         public void BankAccount_Applications_Deposit_ShouldBeOk()
         {
             //Arrange
-            _mockTransactionRepository.Setup(tr => tr.Add(It.IsAny<Transaction>())).Returns(new Transaction { OperationType = OperationTypeEnum.Credit });
             _bankAccount = ObjectMother.BankAccountWithClientWithId();
+            _mockBankAccountRepository.Setup(b => b.GetById(_bankAccount.Id)).Returns(_bankAccount);
+            _mockBankAccountRepository.Setup(b => b.Update(_bankAccount)).Returns(true);
+            _mockTransactionRepository.Setup(tr => tr.Add(It.IsAny<Transaction>())).Returns(new Transaction { Id = 1, OperationType = OperationTypeEnum.Credit });
             double value = 100;
             double expectedBalance = 400;
             double expectedTotalBalance = 900;
 
             //Action
-            _bankAccountService.Deposit(_bankAccount, value);
+            var deposit = _bankAccountService.Deposit(_bankAccount, value);
 
             //Assert
+            deposit.Should().BeTrue();
             _mockBankAccountRepository.Verify(br => br.Update(_bankAccount));
             _mockTransactionRepository.Verify(tr => tr.Add(It.IsAny<Transaction>()));
             _bankAccount.TotalBalance.Should().Be(expectedTotalBalance);
@@ -306,25 +314,28 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
         public void BankAccount_Applications_Transfer_ShouldBeOk()
         {
             //Arrange
+            _bankAccount = ObjectMother.BankAccountWithClientWithId();
             _mockTransactionRepository.SetupSequence(tr => tr.Add(It.IsAny<Transaction>()))
-                .Returns(new Transaction() { OperationType = OperationTypeEnum.Debit })
-                .Returns(new Transaction() { OperationType = OperationTypeEnum.Credit });
-            BankAccount originBankAccount = ObjectMother.BankAccountWithClientWithId();
+                .Returns(new Transaction() {Id = 1, OperationType = OperationTypeEnum.Debit })
+                .Returns(new Transaction() {Id = 2, OperationType = OperationTypeEnum.Credit });
+            _mockBankAccountRepository.Setup(b => b.GetById(_bankAccount.Id)).Returns(_bankAccount);
+            _mockBankAccountRepository.Setup(b => b.Update(_bankAccount)).Returns(true);
             BankAccount receiverBankAccount = ObjectMother.BankAccountWithClientWithId();
             double value = 490;
             double expectedOriginBalance = -190;
             double expectedReceiverBalance = 790;
 
             //Action
-            _bankAccountService.Transfer(originBankAccount, receiverBankAccount, value);
+            var transfer = _bankAccountService.Transfer(_bankAccount, receiverBankAccount, value);
 
             //Assert
+            transfer.Should().BeTrue();
             _mockTransactionRepository.Verify(tr => tr.Add(It.IsAny<Transaction>()));
-            originBankAccount.Balance.Should().Be(expectedOriginBalance);
+            _bankAccount.Balance.Should().Be(expectedOriginBalance);
             receiverBankAccount.Balance.Should().Be(expectedReceiverBalance);
-            originBankAccount.Transactions.Should().HaveCount(1);
+            _bankAccount.Transactions.Should().HaveCount(1);
             receiverBankAccount.Transactions.Should().HaveCount(1);
-            originBankAccount.Transactions.First().OperationType.Should().Be(OperationTypeEnum.Debit);
+            _bankAccount.Transactions.First().OperationType.Should().Be(OperationTypeEnum.Debit);
             receiverBankAccount.Transactions.First().OperationType.Should().Be(OperationTypeEnum.Credit);
         }
 

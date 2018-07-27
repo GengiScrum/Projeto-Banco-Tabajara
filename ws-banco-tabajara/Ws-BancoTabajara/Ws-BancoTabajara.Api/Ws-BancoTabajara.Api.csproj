@@ -103,8 +103,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Common\ApiControllerBase.cs" />
     <Compile Include="Controllers\Common\PublicController.cs" />
-    <Compile Include="Controllers\Features\BankAccounts\BankAccountController.cs" />
-    <Compile Include="Controllers\Features\Clients\ClientController.cs" />
+    <Compile Include="Controllers\Features\BankAccounts\BankAccountsController.cs" />
+    <Compile Include="Controllers\Features\Clients\ClientsController.cs" />
     <Compile Include="Exceptions\ExceptionPayload.cs" />
     <Compile Include="Extensions\ExceptionHandlingExtensions.cs" />
     <Compile Include="Filters\ExceptionHandlerAttribute.cs" />

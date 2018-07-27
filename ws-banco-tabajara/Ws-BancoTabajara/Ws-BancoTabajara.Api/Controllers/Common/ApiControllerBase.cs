@@ -31,17 +31,11 @@ namespace Ws_BancoTabajara.Api.Controllers.Common
 
         protected IHttpActionResult HandleQuery<TResult>(IQueryable<TResult> query)
         {
-            //if (Request.Headers.Accept.Contains(MediaTypeWithQualityHeaderValue.Parse(MediaTypes.Csv)))
-            //    return ResponseMessage(HandleCSVFile(query));
-
             return Ok(query.ToList());
         }
 
         protected IHttpActionResult HandleQueryable<TSource>(IQueryable<TSource> query)
         {
-            //if (Request.Headers.Accept.Contains(MediaTypeWithQualityHeaderValue.Parse(MediaTypes.Csv)))
-            //    return ResponseMessage(HandleCSVFile(query));
-
             return Ok(query.ToList());
         }
 

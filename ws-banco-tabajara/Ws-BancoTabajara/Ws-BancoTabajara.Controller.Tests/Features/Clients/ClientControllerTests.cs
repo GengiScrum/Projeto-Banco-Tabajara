@@ -18,7 +18,7 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.Clients
     [TestFixture]
     public class ClientControllerTests
     {
-        private ClientController _clientController;
+        private ClientsController _clientController;
         private Mock<IClientService> _mockClientService;
         private Mock<Client> _mockClient;
 
@@ -28,7 +28,7 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.Clients
             HttpRequestMessage request = new HttpRequestMessage();
             request.SetConfiguration(new HttpConfiguration());
             _mockClientService = new Mock<IClientService>();
-            _clientController = new ClientController()
+            _clientController = new ClientsController()
             {
                 Request = request,
                 _clientService = _mockClientService.Object,

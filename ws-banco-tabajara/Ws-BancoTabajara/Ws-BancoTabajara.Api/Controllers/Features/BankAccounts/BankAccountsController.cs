@@ -14,11 +14,11 @@ using Ws_BancoTabajara.Infra.ORM.Features.Transactions;
 namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
 {
     [RoutePrefix("api/bankaccounts")]
-    public class BankAccountController : ApiControllerBase
+    public class BankAccountsController : ApiControllerBase
     {
         public IBankAccountService _bankAccountsService;
 
-        public BankAccountController() : base()
+        public BankAccountsController() : base()
         {
             var context = new BancoTabajaraDbContext();
             var bankAccountRepository = new BankAccountRepository(context);
@@ -50,6 +50,14 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         public IHttpActionResult Update(BankAccount bankAccount)
         {
             return HandleCallback(() => _bankAccountsService.Update(bankAccount));
+        }
+
+        [HttpPut]
+        [Route("{id:int}/{-value:double}")]
+        public IHttpActionResult Withdraw(int id, double value)
+        {
+            BankAccount bankAccount = _bankAccountsService.GetById(id);
+            return HandleCallback(() => _bankAccountsService.Withdraw(bankAccount, value));
         }
 
         [HttpDelete]

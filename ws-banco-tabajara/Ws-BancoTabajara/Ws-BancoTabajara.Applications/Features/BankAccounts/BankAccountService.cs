@@ -27,7 +27,7 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             return _repositoryBankAccount.Add(bankAccount).Id;
         }
 
-        public void Deposit(BankAccount bankAccount, double value)
+        public bool Deposit(BankAccount bankAccount, double value)
         {
             if (value <= 0) throw new BankAccountInvalidTransactionValueException();
 
@@ -40,8 +40,13 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             };
             bankAccount.Deposit(value);
             transaction = _repositoryTransaction.Add(transaction);
-            bankAccount.Transactions.Add(transaction);
-            Update(bankAccount);
+            if (transaction.Id > 0)
+            {
+                bankAccount.Transactions.Add(transaction);
+                return Update(bankAccount);
+            }
+            else
+                return false;
         }
 
         public IQueryable<BankAccount> GetAll()
@@ -61,11 +66,15 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             return _repositoryBankAccount.Remove(bankAccount.Id);
         }
 
-        public void Transfer(BankAccount originBankAccount, BankAccount receiverBankAccount, double value)
+        public bool Transfer(BankAccount originBankAccount, BankAccount receiverBankAccount, double value)
         {
             if (value <= 0) throw new BankAccountInvalidTransactionValueException();
-            Withdraw(originBankAccount, value);
-            Deposit(receiverBankAccount, value);
+            var withdraw = Withdraw(originBankAccount, value);
+            var deposit = Deposit(receiverBankAccount, value);
+            if (withdraw && deposit)
+                return true;
+            else
+                return false;
         }
 
         public bool Update(BankAccount bankAccount)
@@ -75,10 +84,10 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             return _repositoryBankAccount.Update(bankAccount);
         }
 
-        public void Withdraw(BankAccount bankAccount, double value)
+        public bool Withdraw(BankAccount bankAccount, double value)
         {
             if (value <= 0) throw new BankAccountInvalidTransactionValueException();
-
+            bankAccount = GetById(bankAccount.Id);
             Transaction transaction = new Transaction
             {
                 Date = DateTime.Now,
@@ -88,8 +97,13 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             };
             bankAccount.Withdraw(value);
             transaction = _repositoryTransaction.Add(transaction);
-            bankAccount.Transactions.Add(transaction);
-            Update(bankAccount);
+            if (transaction.Id > 0)
+            {
+                bankAccount.Transactions.Add(transaction);
+                return Update(bankAccount);
+            }
+            else
+                return false;
         }
 
         public BankStatement GenerateBankStatement(BankAccount bankAccount, int quantity = 0)
