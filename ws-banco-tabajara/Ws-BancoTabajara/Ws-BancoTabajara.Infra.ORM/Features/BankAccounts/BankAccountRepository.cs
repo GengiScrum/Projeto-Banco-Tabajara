@@ -55,7 +55,8 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
 
         public bool SaveChanges()
         {
-            return _context.SaveChanges() > 0;
+            var tal = _context.SaveChanges() > 0;
+            return tal;
         }
 
         public bool Update(BankAccount bankAccount)
