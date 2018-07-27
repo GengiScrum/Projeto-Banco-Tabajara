@@ -15,7 +15,7 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
         }
 
         public int Number { get; set; }
-        public Client Client { get; set; }
+        public virtual Client Client { get; set; }
         public double Balance { get; set; }
         public bool Activated { get; set; }
         public double Limit { get; set; }

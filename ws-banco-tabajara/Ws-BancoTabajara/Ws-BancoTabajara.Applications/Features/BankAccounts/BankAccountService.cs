@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ws_BancoTabajara.Domain.Exceptions;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.BankStatements;
+using Ws_BancoTabajara.Domain.Features.Clients;
 using Ws_BancoTabajara.Domain.Features.Transactions;
 
 namespace Ws_BancoTabajara.Applications.Features.BankAccounts
@@ -14,15 +15,18 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
     {
         private readonly IBankAccountRepository _repositoryBankAccount;
         private readonly ITransactionRepository _repositoryTransaction;
+        private readonly IClientRepository _repositoryClient;
 
-        public BankAccountService(IBankAccountRepository repositoryBankAccount, ITransactionRepository repositoryTransaction)
+        public BankAccountService(IBankAccountRepository repositoryBankAccount, ITransactionRepository repositoryTransaction, IClientRepository repositoryClient)
         {
             _repositoryBankAccount = repositoryBankAccount;
             _repositoryTransaction = repositoryTransaction;
+            _repositoryClient = repositoryClient;
         }
 
         public int Add(BankAccount bankAccount)
         {
+            bankAccount.Client = _repositoryClient.GetById(bankAccount.Client.Id);
             bankAccount.Validate();
             return _repositoryBankAccount.Add(bankAccount).Id;
         }
@@ -87,7 +91,6 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
         public bool Withdraw(BankAccount bankAccount, double value)
         {
             if (value <= 0) throw new BankAccountInvalidTransactionValueException();
-            bankAccount = GetById(bankAccount.Id);
             Transaction transaction = new Transaction
             {
                 Date = DateTime.Now,

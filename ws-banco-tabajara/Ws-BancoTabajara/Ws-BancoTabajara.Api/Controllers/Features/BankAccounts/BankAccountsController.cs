@@ -9,6 +9,7 @@ using Ws_BancoTabajara.Applications.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Infra.ORM.Base;
 using Ws_BancoTabajara.Infra.ORM.Features.BankAccounts;
+using Ws_BancoTabajara.Infra.ORM.Features.Clients;
 using Ws_BancoTabajara.Infra.ORM.Features.Transactions;
 
 namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
@@ -23,7 +24,8 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
             var context = new BancoTabajaraDbContext();
             var bankAccountRepository = new BankAccountRepository(context);
             var transactionRepository = new TransactionRepository(context);
-            _bankAccountsService = new BankAccountService(bankAccountRepository, transactionRepository);
+            var clientRepository = new ClientRepository(context);
+            _bankAccountsService = new BankAccountService(bankAccountRepository, transactionRepository, clientRepository);
         }
 
         [HttpGet]
@@ -53,12 +55,30 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         }
 
         [HttpPut]
-        [Route("{id:int}/{-value:double}")]
+        [Route("withdraw/{id:int}/{value:double}")]
         public IHttpActionResult Withdraw(int id, double value)
         {
             BankAccount bankAccount = _bankAccountsService.GetById(id);
             return HandleCallback(() => _bankAccountsService.Withdraw(bankAccount, value));
         }
+
+        [HttpPut]
+        [Route("deposit/{id:int}/{value:double}")]
+        public IHttpActionResult Deposit(int id, double value)
+        {
+            BankAccount bankAccount = _bankAccountsService.GetById(id);
+            return HandleCallback(() => _bankAccountsService.Deposit(bankAccount, value));
+        }
+
+        [HttpPut]
+        [Route("transfer/{idOrigin:int}/{value:double}/{idReceiver:int}")]
+        public IHttpActionResult Transfer(int idOrigin, double value, int idReceiver)
+        {
+            BankAccount originBankAccount = _bankAccountsService.GetById(idOrigin);
+            BankAccount receiverBankAccount = _bankAccountsService.GetById(idReceiver);
+            return HandleCallback(() => _bankAccountsService.Transfer(originBankAccount, receiverBankAccount, value));
+        }
+
 
         [HttpDelete]
         public IHttpActionResult Remove(BankAccount bankAccount)

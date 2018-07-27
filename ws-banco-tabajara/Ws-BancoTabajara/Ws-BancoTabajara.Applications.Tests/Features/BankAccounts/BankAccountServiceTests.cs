@@ -21,6 +21,7 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
         BankAccount _bankAccount;
         Mock<IBankAccountRepository> _mockBankAccountRepository;
         Mock<ITransactionRepository> _mockTransactionRepository;
+        Mock<IClientRepository> _mockClientRepository;
         Mock<Client> _mockClient;
         IBankAccountService _bankAccountService;
 
@@ -30,8 +31,9 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
             _bankAccount = new BankAccount();
             _mockBankAccountRepository = new Mock<IBankAccountRepository>();
             _mockTransactionRepository = new Mock<ITransactionRepository>();
+            _mockClientRepository = new Mock<IClientRepository>();
             _mockClient = new Mock<Client>();
-            _bankAccountService = new BankAccountService(_mockBankAccountRepository.Object, _mockTransactionRepository.Object);
+            _bankAccountService = new BankAccountService(_mockBankAccountRepository.Object, _mockTransactionRepository.Object, _mockClientRepository.Object);
         }
 
 
@@ -41,6 +43,7 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
             //Arrange
             _bankAccount = ObjectMother.BankAccountWithClientWithId();
             _mockBankAccountRepository.Setup(br => br.Add(_bankAccount)).Returns(_bankAccount);
+            _mockClientRepository.Setup(c => c.GetById(_bankAccount.Client.Id)).Returns(_bankAccount.Client);
 
             //Action
             int addedBankAccountId = _bankAccountService.Add(_bankAccount);
@@ -50,19 +53,19 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
             addedBankAccountId.Should().Be(_bankAccount.Id);
         }
 
-        [Test]
-        public void BankAccount_Applications_Add_ShouldThrowBankAccountWithoutClientException()
-        {
-            //Arrange
-            _bankAccount = ObjectMother.BankAccountWithoutClientWithoutId();
+        //[Test]
+        //public void BankAccount_Applications_Add_ShouldThrowBankAccountWithoutClientException()
+        //{
+        //    //Arrange
+        //    _bankAccount = ObjectMother.BankAccountWithoutClientWithoutId();
 
-            //Action
-            Action act = () => _bankAccountService.Add(_bankAccount);
+        //    //Action
+        //    Action act = () => _bankAccountService.Add(_bankAccount);
 
-            //Assert
-            _mockBankAccountRepository.VerifyNoOtherCalls();
-            act.Should().Throw<BankAccountWithoutClientException>();
-        }
+        //    //Assert
+        //    _mockBankAccountRepository.VerifyNoOtherCalls();
+        //    act.Should().Throw<BankAccountWithoutClientException>();
+        //}
 
         [Test]
         public void BankAccount_Applications_Add_ShouldThrowBankAccountInvalidNumberException()
