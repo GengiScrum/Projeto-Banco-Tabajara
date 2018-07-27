@@ -48,12 +48,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BancoTabajaraDbContext.cs" />
+    <Compile Include="Base\DbContextFactory.cs" />
     <Compile Include="Features\BankAccounts\BankAccountConfiguration.cs" />
     <Compile Include="Features\BankAccounts\BankAccountRepository.cs" />
     <Compile Include="Features\Clients\ClientConfiguration.cs" />
     <Compile Include="Features\Clients\ClientRepository.cs" />
     <Compile Include="Features\Transactions\TransactionConfiguration.cs" />
     <Compile Include="Features\Transactions\TransactionRepository.cs" />
+    <Compile Include="Initializer\DbInitializer.cs" />
+    <Compile Include="Migrations\201807270243584_GengiScrum_DBWS_V1.cs" />
+    <Compile Include="Migrations\201807270243584_GengiScrum_DBWS_V1.Designer.cs">
+      <DependentUpon>201807270243584_GengiScrum_DBWS_V1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +72,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201807270243584_GengiScrum_DBWS_V1.resx">
+      <DependentUpon>201807270243584_GengiScrum_DBWS_V1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
