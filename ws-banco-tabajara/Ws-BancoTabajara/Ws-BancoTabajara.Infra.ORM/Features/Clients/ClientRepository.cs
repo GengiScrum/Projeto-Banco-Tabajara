@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Clients
                 throw new IdentifierUndefinedException();
             var client = GetById(clientId);
             _context.Clients.Remove(client);
-            return _context.SaveChanges() > 0;
+            return SaveChanges();
         }
 
         public bool Update(Client client)
@@ -55,8 +56,14 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Clients
             if (client.Id == 0)
                 throw new IdentifierUndefinedException();
             client.Validate();
-            var oldClient = GetById(client.Id);
-            oldClient = client;
+
+            _context.Entry(client).State = EntityState.Modified;
+
+            return SaveChanges();
+        }
+
+        private bool SaveChanges()
+        {
             return _context.SaveChanges() > 0;
         }
     }

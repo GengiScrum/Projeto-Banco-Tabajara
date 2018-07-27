@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 using Ws_BancoTabajara.Domain.Exceptions;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Infra.ORM.Base;
@@ -28,7 +29,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
 
         public IQueryable<BankAccount> GetAll()
         {
-            return _context.BankAccounts;
+            return _context.BankAccounts.Include(bk => bk.Client);
         }
 
         public BankAccount GetById(int bankAccountId)
@@ -36,7 +37,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
             if (bankAccountId == 0)
                 throw new IdentifierUndefinedException();
 
-            var bankAccountFound = _context.BankAccounts.Where(ba => ba.Id == bankAccountId).FirstOrDefault() 
+            var bankAccountFound = _context.BankAccounts.Include(bk => bk.Client).Where(ba => ba.Id == bankAccountId).FirstOrDefault() 
                                     ?? throw new NotFoundException();
 
             return bankAccountFound;
@@ -55,8 +56,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
 
         public bool SaveChanges()
         {
-            var tal = _context.SaveChanges() > 0;
-            return tal;
+            return _context.SaveChanges() > 0;
         }
 
         public bool Update(BankAccount bankAccount)
@@ -64,11 +64,9 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
             if (bankAccount.Id == 0)
                 throw new IdentifierUndefinedException();
 
+            _context.Entry(bankAccount).State = EntityState.Modified;
+
             bankAccount.Validate();
-
-            var updatedBankAccount = GetById(bankAccount.Id);
-
-            updatedBankAccount = bankAccount;
             return SaveChanges();
         }
     }

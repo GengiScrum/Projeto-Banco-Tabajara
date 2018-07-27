@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Net.Http;
 using Ws_BancoTabajara.Api.Controllers.Common;
 using Ws_BancoTabajara.Applications.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
@@ -31,8 +32,13 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var query = _bankAccountsService.GetAll();
-            return HandleQueryable<BankAccount>(query);
+            var query = Request.GetQueryNameValuePairs()
+                .Where(x => x.Key.Equals("quantity"))
+                .FirstOrDefault();
+
+            int quantity = Convert.ToInt32(query.Value);
+            if (quantity == 0) return HandleQueryable<BankAccount>(_bankAccountsService.GetAll());
+            else return HandleQueryable<BankAccount>(_bankAccountsService.GetAll().Take(quantity));
         }
 
         [HttpGet]
@@ -54,31 +60,33 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
             return HandleCallback(() => _bankAccountsService.Update(bankAccount));
         }
 
-        [HttpPut]
-        [Route("withdraw/{id:int}/{value:double}")]
-        public IHttpActionResult Withdraw(int id, double value)
+        [HttpPatch]
+        [Route("{id:int}/withdraw")]
+        public IHttpActionResult Withdraw(int id, [FromBody] double value)
         {
-            BankAccount bankAccount = _bankAccountsService.GetById(id);
-            return HandleCallback(() => _bankAccountsService.Withdraw(bankAccount, value));
+            return HandleCallback(() => _bankAccountsService.Withdraw(id, value));
         }
 
-        [HttpPut]
-        [Route("deposit/{id:int}/{value:double}")]
-        public IHttpActionResult Deposit(int id, double value)
+        [HttpPatch]
+        [Route("{id:int}/deposit")]
+        public IHttpActionResult Deposit(int id, [FromBody] double value)
         {
-            BankAccount bankAccount = _bankAccountsService.GetById(id);
-            return HandleCallback(() => _bankAccountsService.Deposit(bankAccount, value));
+            return HandleCallback(() => _bankAccountsService.Deposit(id, value));
         }
 
-        [HttpPut]
-        [Route("transfer/{idOrigin:int}/{value:double}/{idReceiver:int}")]
-        public IHttpActionResult Transfer(int idOrigin, double value, int idReceiver)
+        [HttpPatch]
+        [Route("{idOrigin:int}/{idReceiver:int}/transfer")]
+        public IHttpActionResult Transfer(int idOrigin, int idReceiver, [FromBody] double value)
         {
-            BankAccount originBankAccount = _bankAccountsService.GetById(idOrigin);
-            BankAccount receiverBankAccount = _bankAccountsService.GetById(idReceiver);
-            return HandleCallback(() => _bankAccountsService.Transfer(originBankAccount, receiverBankAccount, value));
+            return HandleCallback(() => _bankAccountsService.Transfer(idOrigin, idReceiver, value));
         }
 
+        [HttpGet]
+        [Route("{id:int}/statement")]
+        public IHttpActionResult GenerateBankStatement(int id)
+        {
+            return HandleCallback(() => _bankAccountsService.GenerateBankStatement(id));
+        }
 
         [HttpDelete]
         public IHttpActionResult Remove(BankAccount bankAccount)

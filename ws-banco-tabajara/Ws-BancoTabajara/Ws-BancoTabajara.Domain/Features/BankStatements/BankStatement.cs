@@ -20,6 +20,11 @@ namespace Ws_BancoTabajara.Domain.Features.BankStatements
             ActualLimit = bankAccount.Limit;
         }
 
+        public BankStatement()
+        {
+
+        }
+
         public int BankAccountNumber { get; private set; }
         public DateTime IssuanceDate { get; private set; }
         public string ClientName { get; private set; }

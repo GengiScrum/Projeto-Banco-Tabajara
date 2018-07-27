@@ -63,7 +63,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Transactions
             int quantity = 1;
 
             //Action
-            var getTransactions = _repository.GetManyByBankAccountId(_transaction.BankAccount.Id, quantity).ToList();
+            var getTransactions = _repository.GetManyByBankAccountId(_transaction.BankAccount.Id).ToList();
 
             //Assert
             getTransactions.Last().Should().Be(_transaction);

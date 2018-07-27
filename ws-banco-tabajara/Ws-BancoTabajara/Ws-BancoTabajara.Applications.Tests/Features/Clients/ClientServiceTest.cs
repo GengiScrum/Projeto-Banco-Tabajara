@@ -134,6 +134,7 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.Clients
             _client = ObjectMother.ValidClientWithoutId();
             _client.Id = 1;
             _mockClientRepository.Setup(cr => cr.Update(_client)).Returns(true);
+            _mockClientRepository.Setup(cr => cr.GetById(_client.Id)).Returns(_client);
 
             //Action
             bool updatedClient = _clientService.Update(_client);

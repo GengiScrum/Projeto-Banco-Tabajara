@@ -28,13 +28,14 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
         {
             bankAccount.Client = _repositoryClient.GetById(bankAccount.Client.Id);
             bankAccount.Validate();
-            return _repositoryBankAccount.Add(bankAccount).Id;
+            var bank = _repositoryBankAccount.Add(bankAccount);
+            return bank.Id;
         }
 
-        public bool Deposit(BankAccount bankAccount, double value)
+        public bool Deposit(int id, double value)
         {
             if (value <= 0) throw new BankAccountInvalidTransactionValueException();
-
+            BankAccount bankAccount = GetById(id);
             Transaction transaction = new Transaction
             {
                 Date = DateTime.Now,
@@ -70,11 +71,13 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             return _repositoryBankAccount.Remove(bankAccount.Id);
         }
 
-        public bool Transfer(BankAccount originBankAccount, BankAccount receiverBankAccount, double value)
+        public bool Transfer(int originBankAccountId, int receiverBankAccountId, double value)
         {
             if (value <= 0) throw new BankAccountInvalidTransactionValueException();
-            var withdraw = Withdraw(originBankAccount, value);
-            var deposit = Deposit(receiverBankAccount, value);
+            if (originBankAccountId == receiverBankAccountId)
+                throw new BankAccountTransferToSameBankAccountException();
+            var withdraw = Withdraw(originBankAccountId, value);
+            var deposit = Deposit(receiverBankAccountId, value);
             if (withdraw && deposit)
                 return true;
             else
@@ -85,12 +88,19 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
         {
             if (bankAccount.Id == 0) throw new IdentifierUndefinedException();
             bankAccount.Validate();
-            return _repositoryBankAccount.Update(bankAccount);
+            var alteredBankaccount = GetById(bankAccount.Id);
+            alteredBankaccount.Client = bankAccount.Client;
+            alteredBankaccount.Balance = bankAccount.Balance;
+            alteredBankaccount.Activated = bankAccount.Activated;
+            alteredBankaccount.Limit = bankAccount.Limit;
+            alteredBankaccount.Transactions = bankAccount.Transactions;
+            return _repositoryBankAccount.Update(alteredBankaccount);
         }
 
-        public bool Withdraw(BankAccount bankAccount, double value)
+        public bool Withdraw(int id, double value)
         {
             if (value <= 0) throw new BankAccountInvalidTransactionValueException();
+            BankAccount bankAccount = GetById(id);
             Transaction transaction = new Transaction
             {
                 Date = DateTime.Now,
@@ -109,12 +119,13 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
                 return false;
         }
 
-        public BankStatement GenerateBankStatement(BankAccount bankAccount, int quantity = 0)
+        public BankStatement GenerateBankStatement(int id)
         {
-            if (bankAccount.Id == 0)
+            if (id == 0)
                 throw new IdentifierUndefinedException();
 
-            bankAccount.Transactions = _repositoryTransaction.GetManyByBankAccountId(bankAccount.Id, quantity).ToList();
+            BankAccount bankAccount = GetById(id);
+            bankAccount.Transactions = _repositoryTransaction.GetManyByBankAccountId(bankAccount.Id).ToList();
             return new BankStatement(bankAccount);
         }
     }

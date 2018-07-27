@@ -149,19 +149,5 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.BankAccounts
             //Assert
             act.Should().Throw<IdentifierUndefinedException>();
         }
-
-        [Test]
-        public void BankAccount_Repository_Update_ShouldThrowNotFoundException()
-        {
-            //Arrange
-            int notFoundId = 10;
-            _bankAccount.Id = notFoundId;
-
-            //Action
-            Action act = () => _repository.Update(_bankAccount);
-
-            //Assert
-            act.Should().Throw<NotFoundException>();
-        }
     }
 }

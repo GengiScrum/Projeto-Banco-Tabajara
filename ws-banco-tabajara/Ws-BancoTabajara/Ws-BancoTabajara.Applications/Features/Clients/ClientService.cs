@@ -21,7 +21,8 @@ namespace Ws_BancoTabajara.Applications.Features.Clients
         {
             client.Validate();
 
-            return _clientRepository.Add(client).Id;
+            var newClient = _clientRepository.Add(client);
+            return newClient.Id;
         }
 
         public IQueryable<Client> GetAll()
@@ -52,7 +53,12 @@ namespace Ws_BancoTabajara.Applications.Features.Clients
             if (client.Id == 0)
                 throw new IdentifierUndefinedException();
 
-            return _clientRepository.Update(client);
+            var alteredClient = _clientRepository.GetById(client.Id);
+            alteredClient.Name = client.Name;
+            alteredClient.CPF = client.CPF;
+            alteredClient.RG = client.RG;
+
+            return _clientRepository.Update(alteredClient);
         }
     }
 }

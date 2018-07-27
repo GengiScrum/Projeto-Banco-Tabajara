@@ -77,6 +77,19 @@ namespace Ws_BancoTabajara.Common.Tests.Base
             return new BankAccount
             {
                 Id = 1,
+                Client = ValidClientWithId(),
+                Balance = 300,
+                Limit = 500,
+                Activated = true,
+                Number = 123456
+            };
+        }
+
+        public static BankAccount BankAccountWithClientWithAnotherId()
+        {
+            return new BankAccount
+            {
+                Id = 9,
                 Client = ValidClientWithoutId(),
                 Balance = 300,
                 Limit = 500,
