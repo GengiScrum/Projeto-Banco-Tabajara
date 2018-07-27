@@ -74,5 +74,21 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
             _mockBankAccountService.Verify(bas => bas.GetById(id), Times.Once);
             _mockBankAccount.Verify(ba => ba.Id, Times.Once);
         }
+
+        [Test]
+        public void BankAccout_Controller_Add_ShouldBeOk()
+        {
+            //Arrange
+            var id = 1;
+            _mockBankAccountService.Setup(bas => bas.Add(_mockBankAccount.Object)).Returns(id);
+
+            //Action
+            IHttpActionResult callback = _bankAccountController.Add(_mockBankAccount.Object);
+
+            //Assert
+            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<int>>().Subject;
+            httpResponse.Content.Should().Be(id);
+            _mockBankAccountService.Verify(bas => bas.Add(_mockBankAccount.Object), Times.Once);
+        }
     }
 }

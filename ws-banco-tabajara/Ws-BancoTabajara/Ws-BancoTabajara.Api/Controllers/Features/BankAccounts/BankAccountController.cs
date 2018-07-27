@@ -41,7 +41,7 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         }
 
         [HttpPost]
-        public IHttpActionResult Post(BankAccount bankAccount)
+        public IHttpActionResult Add(BankAccount bankAccount)
         {
             return HandleCallback(() => _bankAccountsService.Add(bankAccount));
         }
