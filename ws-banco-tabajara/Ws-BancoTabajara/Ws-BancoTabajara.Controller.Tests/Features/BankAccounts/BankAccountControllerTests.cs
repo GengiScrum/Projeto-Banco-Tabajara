@@ -55,5 +55,24 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
             httpResponse.Content.Should().NotBeNullOrEmpty();
             httpResponse.Content.First().Id.Should().Be(bankAccount.Id);
         }
+
+        [Test]
+        public void BankAccount_Controller_GetById_ShouldBeOk()
+        {
+            //Arrange
+            var id = 1;
+            _mockBankAccount.Setup(ba => ba.Id).Returns(id);
+            _mockBankAccountService.Setup(bas => bas.GetById(id)).Returns(_mockBankAccount.Object);
+
+            //Action
+            IHttpActionResult callback = _bankAccountController.GetById(id);
+
+            //Assert
+            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<BankAccount>>().Subject;
+            httpResponse.Content.Should().NotBeNull();
+            httpResponse.Content.Id.Should().Be(id);
+            _mockBankAccountService.Verify(bas => bas.GetById(id), Times.Once);
+            _mockBankAccount.Verify(ba => ba.Id, Times.Once);
+        }
     }
 }
