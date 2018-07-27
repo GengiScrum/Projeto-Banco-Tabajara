@@ -75,7 +75,7 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             return _repositoryBankAccount.Update(bankAccount);
         }
 
-        public void Withdraw(BankAccount bankAccount, double value)
+        public bool Withdraw(BankAccount bankAccount, double value)
         {
             if (value <= 0) throw new BankAccountInvalidTransactionValueException();
 
@@ -88,8 +88,13 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             };
             bankAccount.Withdraw(value);
             transaction = _repositoryTransaction.Add(transaction);
-            bankAccount.Transactions.Add(transaction);
-            Update(bankAccount);
+            if (transaction.Id > 0)
+            {
+                bankAccount.Transactions.Add(transaction);
+                return Update(bankAccount);
+            }
+            else
+                return false;
         }
 
         public BankStatement GenerateBankStatement(BankAccount bankAccount, int quantity = 0)

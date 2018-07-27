@@ -52,6 +52,14 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
             return HandleCallback(() => _bankAccountsService.Update(bankAccount));
         }
 
+        [HttpPut]
+        [Route("{id:int}/{-value:double}")]
+        public IHttpActionResult Withdraw(int id, double value)
+        {
+            BankAccount bankAccount = _bankAccountsService.GetById(id);
+            return HandleCallback(() => _bankAccountsService.Withdraw(bankAccount, value));
+        }
+
         [HttpDelete]
         public IHttpActionResult Delete(BankAccount bankAccount)
         {
