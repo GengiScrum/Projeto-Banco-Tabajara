@@ -53,7 +53,7 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         }
 
         [HttpDelete]
-        public IHttpActionResult Delete(BankAccount bankAccount)
+        public IHttpActionResult Remove(BankAccount bankAccount)
         {
             return HandleCallback(() => _bankAccountsService.Remove(bankAccount));
         }

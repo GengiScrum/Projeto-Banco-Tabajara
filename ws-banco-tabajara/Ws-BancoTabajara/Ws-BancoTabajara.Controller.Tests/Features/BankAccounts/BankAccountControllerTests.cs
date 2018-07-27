@@ -106,5 +106,21 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
             httpResponse.Content.Should().BeTrue();
             _mockBankAccountService.Verify(bas => bas.Update(_mockBankAccount.Object), Times.Once);
         }
+
+        [Test]
+        public void BankAccount_Controller_Remove_ShouldBeOk()
+        {
+            //Arrange
+            var isDeleted = true;
+            _mockBankAccountService.Setup(bas => bas.Remove(_mockBankAccount.Object)).Returns(isDeleted);
+
+            //Action
+            IHttpActionResult callback = _bankAccountController.Remove(_mockBankAccount.Object);
+
+            //Assert
+            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
+            httpResponse.Content.Should().BeTrue();
+            _mockBankAccountService.Verify(bas => bas.Remove(_mockBankAccount.Object), Times.Once);
+        }
     }
 }
