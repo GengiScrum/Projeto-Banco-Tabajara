@@ -13,7 +13,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Base
 {
     public class BancoTabajaraDbContext : DbContext
     {
-        public BancoTabajaraDbContext(string connection = "Name=GengiScrum_DBWS")
+        public BancoTabajaraDbContext(string connection = "name=GengiScrum_DBWS") : base(connection)
         {
             this.Configuration.LazyLoadingEnabled = true;
         }
@@ -27,7 +27,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Base
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.AddFromAssembly(System.Reflection.Assembly.GetExecutingAssembly());
-            base.OnModelCreating(modelBuilder);
+            //base.OnModelCreating(modelBuilder);
         }
     }
 }
