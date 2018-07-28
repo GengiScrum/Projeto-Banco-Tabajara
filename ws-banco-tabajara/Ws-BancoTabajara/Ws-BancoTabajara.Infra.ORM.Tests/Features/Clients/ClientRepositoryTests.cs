@@ -52,84 +52,6 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Clients
         }
 
         [Test]
-        public void Client_Repository_Add_ShouldThrowClientNullOrEmptyNameException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientEmptyName();
-
-            //Action
-            Action act = () => _repository.Add(_client);
-
-            //Assert
-            act.Should().Throw<ClientNullOrEmptyNameException>();
-        }
-
-        [Test]
-        public void Client_Repository_Add_ShouldThrowClientNameOverflowException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientNameOverflow();
-
-            //Action
-            Action act = () => _repository.Add(_client);
-
-            //Assert
-            act.Should().Throw<ClientNameOverflowException>();
-        }
-
-        [Test]
-        public void Client_Repository_Add_ShouldThrowClientNullOrEmptyCPFException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientEmptyCPF();
-
-            //Action
-            Action act = () => _repository.Add(_client);
-
-            //Assert
-            act.Should().Throw<ClientNullOrEmptyCPFException>();
-        }
-
-        [Test]
-        public void Client_Repository_Add_ShouldThrowClientCPFOverflowException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientCPFOverflow();
-
-            //Action
-            Action act = () => _repository.Add(_client);
-
-            //Assert
-            act.Should().Throw<ClientCPFOverflowException>();
-        }
-
-        [Test]
-        public void Client_Repository_Add_ShouldThrowClientNullOrEmptyRGException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientEmptyRG();
-
-            //Action
-            Action act = () => _repository.Add(_client);
-
-            //Assert
-            act.Should().Throw<ClientNullOrEmptyRGException>();
-        }
-
-        [Test]
-        public void Client_Repository_Add_ShouldThrowClientRGOverflowException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientRGOverflow();
-
-            //Action
-            Action act = () => _repository.Add(_client);
-
-            //Assert
-            act.Should().Throw<ClientRGOverflowException>();
-        }
-
-        [Test]
         public void Client_Repository_Update_ShouldBeOk()
         {
             //Arrange
@@ -156,90 +78,6 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Clients
 
             //Assert
             act.Should().Throw<IdentifierUndefinedException>();
-        }
-
-        [Test]
-        public void Client_Repository_Update_ShouldThrowClientNullOrEmptyNameException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientEmptyName();
-            _client.Id = 1;
-
-            //Action
-            Action act = () => _repository.Update(_client);
-
-            //Assert
-            act.Should().Throw<ClientNullOrEmptyNameException>();
-        }
-
-        [Test]
-        public void Client_Repository_Update_ShouldThrowClientNameOverflowException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientNameOverflow();
-            _client.Id = 1;
-
-            //Action
-            Action act = () => _repository.Update(_client);
-
-            //Assert
-            act.Should().Throw<ClientNameOverflowException>();
-        }
-
-        [Test]
-        public void Client_Repository_Update_ShouldThrowClientNullOrEmptyCPFException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientEmptyCPF();
-            _client.Id = 1;
-
-            //Action
-            Action act = () => _repository.Update(_client);
-
-            //Assert
-            act.Should().Throw<ClientNullOrEmptyCPFException>();
-        }
-
-        [Test]
-        public void Client_Repository_Update_ShouldThrowClientCPFOverflowException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientCPFOverflow();
-            _client.Id = 1;
-
-            //Action
-            Action act = () => _repository.Update(_client);
-
-            //Assert
-            act.Should().Throw<ClientCPFOverflowException>();
-        }
-
-        [Test]
-        public void Client_Repository_Update_ShouldThrowClientNullOrEmptyRGException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientEmptyRG();
-            _client.Id = 1;
-
-            //Action
-            Action act = () => _repository.Update(_client);
-
-            //Assert
-            act.Should().Throw<ClientNullOrEmptyRGException>();
-        }
-
-        [Test]
-        public void Client_Repository_Update_ShouldThrowClientRGOverflowException()
-        {
-            //Arrange
-            _client = ObjectMother.ClientRGOverflow();
-            _client.Id = 1;
-
-            //Action
-            Action act = () => _repository.Update(_client);
-
-            //Assert
-            act.Should().Throw<ClientRGOverflowException>();
         }
 
         [Test]
@@ -281,6 +119,20 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Clients
             //Assert
             clients.Should().NotBeNull();
             clients.Should().HaveCount(1);
+            clients.First().Should().Be(_clientSeed);
+        }
+
+        [Test]
+        public void Client_Repository_GetAllWithoutQuantity_ShouldBeOk()
+        {
+            //Arrange
+            var quantity = 0;
+
+            //Action
+            var clients = _repository.GetAll(quantity);
+
+            //Assert
+            clients.Should().NotBeNull();
             clients.First().Should().Be(_clientSeed);
         }
 
