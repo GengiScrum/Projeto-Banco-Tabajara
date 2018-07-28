@@ -175,15 +175,16 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
         public void BankAccount_Applications_GetAll_ShouldBeOk()
         {
             //Arrange
+            var quantity = 1;
             _bankAccount = ObjectMother.BankAccountWithClientWithId();
             var bankAccountRepositoryGetAllMockValue = new List<BankAccount>() { _bankAccount }.AsQueryable();
-            _mockBankAccountRepository.Setup(br => br.GetAll()).Returns(bankAccountRepositoryGetAllMockValue);
+            _mockBankAccountRepository.Setup(br => br.GetAll(quantity)).Returns(bankAccountRepositoryGetAllMockValue);
 
             //Action
-            var bankAccounts = _bankAccountService.GetAll();
+            var bankAccounts = _bankAccountService.GetAll(quantity);
 
             //Assert
-            _mockBankAccountRepository.Verify(br => br.GetAll(), Times.Once);
+            _mockBankAccountRepository.Verify(br => br.GetAll(quantity), Times.Once);
             bankAccounts.Should().NotBeNull();
             bankAccounts.Count().Should().Be(bankAccountRepositoryGetAllMockValue.Count());
             bankAccounts.First().Should().Be(bankAccountRepositoryGetAllMockValue.First());

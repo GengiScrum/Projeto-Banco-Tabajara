@@ -40,15 +40,16 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.Clients
         public void Client_Controller_GetAll_ShouldBeOk()
         {
             //Arrange
+            var quantity = 0;
             var client = ObjectMother.ValidClientWithId();
             var response = new List<Client>() { client }.AsQueryable();
-            _mockClientService.Setup(cs => cs.GetAll()).Returns(response);
+            _mockClientService.Setup(cs => cs.GetAll(quantity)).Returns(response);
 
             //Action
             var callback = _clientController.GetAll();
 
             //Assert
-            _mockClientService.Verify(cs => cs.GetAll(), Times.Once);
+            _mockClientService.Verify(cs => cs.GetAll(quantity), Times.Once);
             var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<List<Client>>>().Subject;
             httpResponse.Content.Should().NotBeNullOrEmpty();
             httpResponse.Content.First().Id.Should().Be(client.Id);

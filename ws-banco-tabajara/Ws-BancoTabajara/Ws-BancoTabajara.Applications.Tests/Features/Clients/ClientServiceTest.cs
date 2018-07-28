@@ -282,15 +282,16 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.Clients
         public void Client_Applications_GetAll_ShouldBeOk()
         {
             //Arrange
+            var quantity = 1;
             _client = ObjectMother.ValidClientWithoutId();
             var clientRepositoryMockValue = new List<Client>() { _client }.AsQueryable();
-            _mockClientRepository.Setup(cr => cr.GetAll()).Returns(clientRepositoryMockValue);
+            _mockClientRepository.Setup(cr => cr.GetAll(quantity)).Returns(clientRepositoryMockValue);
 
             //Action
-            var clients = _clientService.GetAll();
+            var clients = _clientService.GetAll(quantity);
 
             //Assert
-            _mockClientRepository.Verify(cr => cr.GetAll(), Times.Once);
+            _mockClientRepository.Verify(cr => cr.GetAll(quantity), Times.Once);
             clients.Should().NotBeNull();
             clients.Count().Should().Be(clientRepositoryMockValue.Count());
             clients.First().Should().Be(clientRepositoryMockValue.First());

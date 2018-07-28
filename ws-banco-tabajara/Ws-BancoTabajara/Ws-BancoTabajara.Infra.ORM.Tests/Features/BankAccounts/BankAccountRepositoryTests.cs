@@ -50,8 +50,11 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.BankAccounts
         [Test]
         public void BankAccount_Repository_GetAll_ShouldBeOk()
         {
+            //Arrange
+            var quantity = 1;
+
             //Action
-            var bankAccounts = _repository.GetAll().ToList();
+            var bankAccounts = _repository.GetAll(quantity).ToList();
 
             //Assert
             bankAccounts.Should().NotBeNull();
