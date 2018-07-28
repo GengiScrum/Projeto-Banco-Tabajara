@@ -126,20 +126,9 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
 
             BankAccount bankAccount = GetById(id);
             bankAccount.Transactions = _repositoryTransaction.GetManyByBankAccountId(bankAccount.Id).ToList();
-            return CreateBankStatement(bankAccount);
-        }
-
-        private static BankStatement CreateBankStatement(BankAccount bankAccount)
-        {
-            return new BankStatement
-            {
-                BankAccountNumber = bankAccount.Number,
-                IssuanceDate = DateTime.Now,
-                ClientName = bankAccount.Client.Name,
-                Transactions = bankAccount.Transactions,
-                AvailableBalance = bankAccount.Balance,
-                ActualLimit = bankAccount.Limit
-            };
+            BankStatement bankStatement = new BankStatement();
+            bankStatement.GenerateBankStatement(bankAccount);
+            return bankStatement;
         }
     }
 }

@@ -16,5 +16,15 @@ namespace Ws_BancoTabajara.Domain.Features.BankStatements
         public ICollection<Transaction> Transactions { get; set; }
         public double AvailableBalance { get; set; }
         public double ActualLimit { get; set; }
+
+        public void GenerateBankStatement(BankAccount bankAccount)
+        {
+            BankAccountNumber = bankAccount.Number;
+            IssuanceDate = DateTime.Now;
+            ClientName = bankAccount.Client.Name;
+            Transactions = bankAccount.Transactions;
+            AvailableBalance = bankAccount.Balance;
+            ActualLimit = bankAccount.Limit;
+        }
     }
 }
