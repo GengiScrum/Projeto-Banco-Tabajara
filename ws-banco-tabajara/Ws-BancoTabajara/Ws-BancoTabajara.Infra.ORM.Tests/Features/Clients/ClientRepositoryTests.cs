@@ -272,8 +272,11 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Clients
         [Test]
         public void Client_Repository_GetAll_ShouldBeOk()
         {
+            //Arrange
+            var quantity = 1;
+
             //Action
-            var clients = _repository.GetAll();
+            var clients = _repository.GetAll(quantity);
 
             //Assert
             clients.Should().NotBeNull();

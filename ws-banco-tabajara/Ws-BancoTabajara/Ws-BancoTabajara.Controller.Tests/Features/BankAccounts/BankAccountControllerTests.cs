@@ -47,9 +47,10 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
         public void BankAccount_Controller_GetAll_ShouldBeOk()
         {
             //Arrange
+            var quantity = 0;
             var bankAccount = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
             var response = new List<BankAccount>() { bankAccount }.AsQueryable();
-            _mockBankAccountService.Setup(bas => bas.GetAll()).Returns(response);
+            _mockBankAccountService.Setup(bas => bas.GetAll(quantity)).Returns(response);
 
             //Action
             var callback = _bankAccountController.GetAll();
