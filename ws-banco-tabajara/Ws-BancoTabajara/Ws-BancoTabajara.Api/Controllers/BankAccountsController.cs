@@ -15,7 +15,7 @@ using Ws_BancoTabajara.Infra.ORM.Features.Transactions;
 using System.Web.UI.WebControls;
 using Ws_BancoTabajara.Api.Extensions;
 
-namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
+namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
 {
     [RoutePrefix("api/bankaccounts")]
     public class BankAccountsController : ApiControllerBase

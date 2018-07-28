@@ -11,7 +11,7 @@ using Ws_BancoTabajara.Domain.Features.Clients;
 using Ws_BancoTabajara.Infra.ORM.Base;
 using Ws_BancoTabajara.Infra.ORM.Features.Clients;
 
-namespace Ws_BancoTabajara.Api.Controllers.Features.Clients
+namespace Ws_BancoTabajara.Api.Controllers.Clients
 {
     [RoutePrefix("api/clients")]
     public class ClientsController : ApiControllerBase

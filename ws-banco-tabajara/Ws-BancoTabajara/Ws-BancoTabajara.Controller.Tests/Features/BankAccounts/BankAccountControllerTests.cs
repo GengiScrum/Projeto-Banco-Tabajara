@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
-using Ws_BancoTabajara.Api.Controllers.Features.BankAccounts;
+using Ws_BancoTabajara.Api.Controllers.BankAccounts;
 using Ws_BancoTabajara.Common.Tests.Base;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.BankStatements;
