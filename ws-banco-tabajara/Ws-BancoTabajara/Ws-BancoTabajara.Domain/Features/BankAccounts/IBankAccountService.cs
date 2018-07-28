@@ -9,7 +9,7 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
 {
     public interface IBankAccountService
     {
-        IQueryable<BankAccount> GetAll();
+        IQueryable<BankAccount> GetAll(int quantity);
         int Add(BankAccount bankAccount);
         bool Update(BankAccount bankAccount);
         BankAccount GetById(int id);

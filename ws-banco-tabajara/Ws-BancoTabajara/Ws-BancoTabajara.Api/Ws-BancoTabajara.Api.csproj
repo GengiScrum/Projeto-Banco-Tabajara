@@ -113,6 +113,7 @@
     <Compile Include="Controllers\Features\Clients\ClientsController.cs" />
     <Compile Include="Exceptions\ExceptionPayload.cs" />
     <Compile Include="Extensions\ExceptionHandlingExtensions.cs" />
+    <Compile Include="Extensions\QueryExtensions.cs" />
     <Compile Include="Filters\ExceptionHandlerAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

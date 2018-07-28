@@ -27,9 +27,12 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
             return bankAccount;
         }
 
-        public IQueryable<BankAccount> GetAll()
+        public IQueryable<BankAccount> GetAll(int quantity)
         {
-            return _context.BankAccounts.Include(bk => bk.Client);
+            if (quantity > 0)
+                return _context.BankAccounts.Include(b => b.Client).Take(quantity);
+            else
+                return _context.BankAccounts.Include(b => b.Client);
         }
 
         public BankAccount GetById(int bankAccountId)
@@ -37,7 +40,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
             if (bankAccountId == 0)
                 throw new IdentifierUndefinedException();
 
-            var bankAccountFound = _context.BankAccounts.Include(bk => bk.Client).Where(ba => ba.Id == bankAccountId).FirstOrDefault() 
+            var bankAccountFound = _context.BankAccounts.Include(bk => bk.Client).Where(ba => ba.Id == bankAccountId).FirstOrDefault()
                                     ?? throw new NotFoundException();
 
             return bankAccountFound;

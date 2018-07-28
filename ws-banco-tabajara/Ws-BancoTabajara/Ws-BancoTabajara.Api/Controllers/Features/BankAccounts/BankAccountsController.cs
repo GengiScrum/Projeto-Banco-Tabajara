@@ -12,6 +12,8 @@ using Ws_BancoTabajara.Infra.ORM.Base;
 using Ws_BancoTabajara.Infra.ORM.Features.BankAccounts;
 using Ws_BancoTabajara.Infra.ORM.Features.Clients;
 using Ws_BancoTabajara.Infra.ORM.Features.Transactions;
+using System.Web.UI.WebControls;
+using Ws_BancoTabajara.Api.Extensions;
 
 namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
 {
@@ -32,13 +34,8 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.BankAccounts
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var query = Request.GetQueryNameValuePairs()
-                .Where(x => x.Key.Equals("quantity"))
-                .FirstOrDefault();
-
-            int quantity = Convert.ToInt32(query.Value);
-            if (quantity == 0) return HandleQueryable<BankAccount>(_bankAccountsService.GetAll());
-            else return HandleQueryable<BankAccount>(_bankAccountsService.GetAll().Take(quantity));
+            var quantity = Request.GetQueryValueExtension();
+            return HandleQueryable<BankAccount>(_bankAccountsService.GetAll(quantity));
         }
 
         [HttpGet]

@@ -27,9 +27,12 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Clients
             return newClient;
         }
 
-        public IQueryable<Client> GetAll()
+        public IQueryable<Client> GetAll(int quantity)
         {
-            return _context.Clients;
+            if (quantity > 0)
+                return _context.Clients.Take(quantity);
+            else
+                return _context.Clients;
         }
 
         public Client GetById(int clientId)

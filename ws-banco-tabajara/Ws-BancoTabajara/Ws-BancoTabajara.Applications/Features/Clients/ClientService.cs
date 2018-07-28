@@ -25,9 +25,9 @@ namespace Ws_BancoTabajara.Applications.Features.Clients
             return newClient.Id;
         }
 
-        public IQueryable<Client> GetAll()
+        public IQueryable<Client> GetAll(int quantity)
         {
-            return _clientRepository.GetAll();
+            return _clientRepository.GetAll(quantity);
         }
 
         public Client GetById(int clientId)
