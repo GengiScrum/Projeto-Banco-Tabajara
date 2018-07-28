@@ -128,23 +128,71 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
         }
 
         [Test]
+        public void BankAccount_Controller_Withdraw_ShouldBeOk()
+        {
+            //Arrange
+            var wasWithdrawn = true;
+            var value = 100;
+            var bankAccount = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
+            _mockBankAccountService.Setup(bas => bas.Withdraw(bankAccount.Id, value)).Returns(wasWithdrawn);
+
+            //Action
+            IHttpActionResult callback = _bankAccountController.Withdraw(bankAccount.Id, value);
+
+            //Assert
+            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
+            _mockBankAccountService.Verify(bas => bas.Withdraw(bankAccount.Id, value), Times.Once);
+        }
+
+        [Test]
+        public void BankAccount_Controller_Deposit_ShouldBeOk()
+        {
+            //Arrange
+            var wasDeposited = true;
+            var value = 100;
+            var bankAccount = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
+            _mockBankAccountService.Setup(bas => bas.Deposit(bankAccount.Id, value)).Returns(wasDeposited);
+
+            //Action
+            IHttpActionResult callback = _bankAccountController.Deposit(bankAccount.Id, value);
+
+            //Assert
+            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
+            _mockBankAccountService.Verify(bas => bas.Deposit(bankAccount.Id, value), Times.Once);
+        }
+
+        [Test]
+        public void BankAccount_Controller_Transfer_ShouldBeOk()
+        {
+            //Arrange
+            var wasTransferred = true;
+            var value = 100;
+            var bankAccountOrigin = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
+            var bankAccountReceiver = ObjectMother.BankAccountWithClientWithAnotherId(_mockClient.Object);
+            _mockBankAccountService.Setup(bas => bas.Transfer(bankAccountOrigin.Id, bankAccountReceiver.Id, value)).Returns(wasTransferred);
+
+            //Action
+            IHttpActionResult callback = _bankAccountController.Transfer(bankAccountOrigin.Id, bankAccountReceiver.Id, value);
+
+            //Assert
+            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
+            _mockBankAccountService.Verify(bas => bas.Transfer(bankAccountOrigin.Id, bankAccountReceiver.Id, value), Times.Once);
+        }
+
+        [Test]
         public void BankAccount_Controller_GenerateBankStatement_ShouldBeOk()
         {
             //Arrange
-            var id = 1;
-            _mockBankAccount.Setup(ba => ba.Id).Returns(id);
-            _mockBankAccountService.Setup(bas => bas.GetById(id)).Returns(_mockBankAccount.Object);
-            _mockBankAccountService.Setup(bas => bas.GenerateBankStatement(id)).Returns(_mockBankStatement.Object);
+            var bankAccount = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
+            _mockBankAccountService.Setup(bas => bas.GenerateBankStatement(bankAccount.Id)).Returns(_mockBankStatement.Object);
 
             //Action
-            IHttpActionResult callback = _bankAccountController.GenerateBankStatement(id);
+            IHttpActionResult callback = _bankAccountController.GenerateBankStatement(bankAccount.Id);
 
             //Assert
             var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<BankStatement>>().Subject;
             httpResponse.Content.Should().Be(_mockBankStatement.Object);
-            _mockBankAccount.Verify(ba => ba.Id);
-            _mockBankAccountService.Verify(bas => bas.GetById(id));
-            _mockBankAccountService.Verify(bas => bas.GenerateBankStatement(id));
+            _mockBankAccountService.Verify(bas => bas.GenerateBankStatement(bankAccount.Id));
         }
     }
 }
