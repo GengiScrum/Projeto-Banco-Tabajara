@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
+using Ws_BancoTabajara.Domain.Features.BankStatements;
 using Ws_BancoTabajara.Domain.Features.Clients;
 using Ws_BancoTabajara.Domain.Features.Transactions;
 
@@ -11,6 +12,14 @@ namespace Ws_BancoTabajara.Common.Tests.Base
 {
     public static class ObjectMother
     {
+        #region BankStatement
+        public static BankStatement ValidBankStatement(BankAccount bankAccount)
+        {
+            BankStatement bankStatement = new BankStatement();
+            bankStatement.GenerateBankStatement(bankAccount);
+            return bankStatement;
+        }
+        #endregion
 
         #region BankAccount
         public static BankAccount ValidActivatedBankAccountWithoutId(Client client)

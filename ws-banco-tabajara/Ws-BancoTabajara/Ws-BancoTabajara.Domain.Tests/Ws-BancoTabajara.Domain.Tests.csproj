@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Features\BankAccounts\BankAccountTest.cs" />
+    <Compile Include="Features\BankStatements\BankStatementTests.cs" />
     <Compile Include="Features\Clients\ClientTest.cs" />
     <Compile Include="Features\Transactions\TransactionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

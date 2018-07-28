@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ws_BancoTabajara.Domain.Exceptions;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.Transactions;
 
@@ -19,6 +20,9 @@ namespace Ws_BancoTabajara.Domain.Features.BankStatements
 
         public void GenerateBankStatement(BankAccount bankAccount)
         {
+            if (bankAccount == null)
+                throw new NotFoundException();
+
             BankAccountNumber = bankAccount.Number;
             IssuanceDate = DateTime.Now;
             ClientName = bankAccount.Client.Name;
