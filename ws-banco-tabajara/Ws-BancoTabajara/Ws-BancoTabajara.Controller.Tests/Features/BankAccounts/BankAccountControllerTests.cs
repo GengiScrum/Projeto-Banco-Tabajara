@@ -195,5 +195,20 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
             httpResponse.Content.Should().Be(_mockBankStatement.Object);
             _mockBankAccountService.Verify(bas => bas.GenerateBankStatement(bankAccount.Id));
         }
+
+        [Test]
+        public void BankAccount_Controller_ChangeActivation_ShouldBeOk()
+        {
+            //Arrange
+            var bankAccount = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
+            _mockBankAccountService.Setup(bs => bs.ChangeActivation(bankAccount.Id)).Returns(true);
+
+            //Action
+            IHttpActionResult callBack = _bankAccountController.ChangeActivation(bankAccount.Id);
+
+            //Assert
+            var httpResponse = callBack.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
+            _mockBankAccountService.Verify(bs => bs.ChangeActivation(bankAccount.Id), Times.Once);
+        }
     }
 }

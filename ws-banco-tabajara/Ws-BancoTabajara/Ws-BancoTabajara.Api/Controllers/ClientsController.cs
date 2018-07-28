@@ -28,7 +28,7 @@ namespace Ws_BancoTabajara.Api.Controllers.Clients
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            int quantity = Request.GetQueryValueExtension();
+            int quantity = Request.GetQueryQuantityValueExtension();
             return HandleQueryable<Client>(_clientService.GetAll(quantity));
         }
 
