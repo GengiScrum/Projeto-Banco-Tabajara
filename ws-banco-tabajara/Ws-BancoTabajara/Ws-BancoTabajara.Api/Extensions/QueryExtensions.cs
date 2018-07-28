@@ -19,5 +19,4 @@ namespace Ws_BancoTabajara.Api.Extensions
                 .FirstOrDefault().Value);
             return quantity;
         }
-    }
 }

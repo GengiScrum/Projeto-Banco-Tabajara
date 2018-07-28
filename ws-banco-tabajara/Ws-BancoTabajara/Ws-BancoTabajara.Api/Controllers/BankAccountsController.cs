@@ -84,6 +84,12 @@ namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
         {
             return HandleCallback(() => _bankAccountsService.Transfer(idOrigin, idReceiver, value));
         }
+        [HttpPatch]
+        [Route("{id:int}/changeactivation")]
+        public IHttpActionResult ChangeActivation(int id)
+        {
+            return HandleCallback(() => _bankAccountsService.ChangeActivation(id));
+        }
 
         [HttpDelete]
         public IHttpActionResult Remove(BankAccount bankAccount)
