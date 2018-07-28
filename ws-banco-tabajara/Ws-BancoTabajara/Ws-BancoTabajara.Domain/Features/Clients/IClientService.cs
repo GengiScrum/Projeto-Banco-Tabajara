@@ -8,7 +8,7 @@ namespace Ws_BancoTabajara.Domain.Features.Clients
 {
     public interface IClientService
     {
-        IQueryable<Client> GetAll();
+        IQueryable<Client> GetAll(int quantity);
         int Add(Client client);
         bool Update(Client client);
         Client GetById(int clientId);

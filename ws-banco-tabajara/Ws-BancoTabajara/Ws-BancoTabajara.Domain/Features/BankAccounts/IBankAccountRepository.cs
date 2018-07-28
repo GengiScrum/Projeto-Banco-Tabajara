@@ -8,7 +8,7 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
 {
     public interface IBankAccountRepository
     {
-        IQueryable<BankAccount> GetAll();
+        IQueryable<BankAccount> GetAll(int quantity);
         BankAccount Add(BankAccount bankAccount);
         bool Update(BankAccount bankAccount);
         BankAccount GetById(int bankAccountId);

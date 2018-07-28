@@ -54,9 +54,9 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
                 return false;
         }
 
-        public IQueryable<BankAccount> GetAll()
+        public IQueryable<BankAccount> GetAll(int quantity)
         {
-            return _repositoryBankAccount.GetAll();
+            return _repositoryBankAccount.GetAll(quantity);
         }
 
         public BankAccount GetById(int id)

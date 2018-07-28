@@ -5,12 +5,13 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Ws_BancoTabajara.Api.Controllers.Common;
+using Ws_BancoTabajara.Api.Extensions;
 using Ws_BancoTabajara.Applications.Features.Clients;
 using Ws_BancoTabajara.Domain.Features.Clients;
 using Ws_BancoTabajara.Infra.ORM.Base;
 using Ws_BancoTabajara.Infra.ORM.Features.Clients;
 
-namespace Ws_BancoTabajara.Api.Controllers.Features.Clients
+namespace Ws_BancoTabajara.Api.Controllers.Clients
 {
     [RoutePrefix("api/clients")]
     public class ClientsController : ApiControllerBase
@@ -27,8 +28,8 @@ namespace Ws_BancoTabajara.Api.Controllers.Features.Clients
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var query = _clientService.GetAll();
-            return HandleQueryable<Client>(query);
+            int quantity = Request.GetQueryValueExtension();
+            return HandleQueryable<Client>(_clientService.GetAll(quantity));
         }
 
         [HttpGet]

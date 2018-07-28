@@ -109,10 +109,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Common\ApiControllerBase.cs" />
     <Compile Include="Controllers\Common\PublicController.cs" />
-    <Compile Include="Controllers\Features\BankAccounts\BankAccountsController.cs" />
-    <Compile Include="Controllers\Features\Clients\ClientsController.cs" />
+    <Compile Include="Controllers\BankAccountsController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Exceptions\ExceptionPayload.cs" />
     <Compile Include="Extensions\ExceptionHandlingExtensions.cs" />
+    <Compile Include="Extensions\QueryExtensions.cs" />
     <Compile Include="Filters\ExceptionHandlerAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
