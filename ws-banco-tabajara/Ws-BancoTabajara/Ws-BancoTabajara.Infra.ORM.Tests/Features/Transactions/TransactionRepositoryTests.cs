@@ -53,24 +53,8 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Transactions
             addedTransaction.Should().Be(_transaction);
         }
 
-
         [Test]
-        public void Transaction_Repository_GetManyByBankAccountId_WithQuantity_ShouldBeOk()
-        {
-            //Arrange
-            _transaction = ObjectMother.ValidCreditTransaction(_bankAccountSeed);
-            _repository.Add(_transaction);
-            int quantity = 1;
-
-            //Action
-            var getTransactions = _repository.GetManyByBankAccountId(_transaction.BankAccount.Id).ToList();
-
-            //Assert
-            getTransactions.Last().Should().Be(_transaction);
-        }
-
-        [Test]
-        public void Transaction_Repository_GetManyByBankAccountId_WithoutQuantity_ShouldBeOk()
+        public void Transaction_Repository_GetManyByBankAccountId_ShouldBeOk()
         {
             //Action
             var getTransactions = _repository.GetManyByBankAccountId(_transactionSeed.BankAccount.Id).ToList();
