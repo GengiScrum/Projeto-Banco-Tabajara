@@ -277,6 +277,23 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
         }
 
         [Test]
+        public void BankAccount_Applications_Withdraw_FailTransaction_ShouldBeFalse()
+        {
+            //Arrange
+            _bankAccount = ObjectMother.BankAccountWithClientWithId();
+            _mockBankAccountRepository.Setup(b => b.GetById(_bankAccount.Id)).Returns(_bankAccount);
+            _mockBankAccountRepository.Setup(b => b.Update(_bankAccount)).Returns(true);
+            _mockTransactionRepository.Setup(tr => tr.Add(It.IsAny<Transaction>())).Returns(new Transaction { Id = 0 });
+            double value = 700;
+
+            //Action
+            var withdraw = _bankAccountService.Withdraw(_bankAccount.Id, value);
+
+            //Assert
+            withdraw.Should().BeFalse();
+        }
+
+        [Test]
         public void BankAccount_Applications_Deposit_ShouldBeOk()
         {
             //Arrange
@@ -300,7 +317,24 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
             _bankAccount.Transactions.Should().HaveCount(1);
             _bankAccount.Transactions.First().OperationType.Should().Be(OperationTypeEnum.Credit);
         }
-        
+
+        [Test]
+        public void BankAccount_Applications_Deposit_FailTransaction_ShouldBeFalse()
+        {
+            //Arrange
+            _bankAccount = ObjectMother.BankAccountWithClientWithId();
+            _mockBankAccountRepository.Setup(b => b.GetById(_bankAccount.Id)).Returns(_bankAccount);
+            _mockBankAccountRepository.Setup(b => b.Update(_bankAccount)).Returns(true);
+            _mockTransactionRepository.Setup(tr => tr.Add(It.IsAny<Transaction>())).Returns(new Transaction { Id = 0 });
+            double value = 100;
+
+            //Action
+            var deposit = _bankAccountService.Deposit(_bankAccount.Id, value);
+
+            //Assert
+            deposit.Should().BeFalse();
+        }
+
         [Test]
         public void BankAccount_Applications_Deposit_ShouldThrowBankAccountInvalidTransactionValueException()
         {
@@ -309,7 +343,7 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
             double value = -900;
 
             //Action
-            Action act = () => _bankAccountService.Withdraw(_bankAccount.Id, value);
+            Action act = () => _bankAccountService.Deposit(_bankAccount.Id, value);
 
             //Assert
             _mockBankAccountRepository.VerifyNoOtherCalls();
@@ -361,6 +395,44 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
             //Assert
             _mockBankAccountRepository.VerifyNoOtherCalls();
             act.Should().Throw<BankAccountInvalidTransactionValueException>();
+        }
+
+        [Test]
+        public void BankAccount_Applications_Transfer_ShouldThrowBankAccountTransferToSameBankAccountException()
+        {
+            //Arrange
+            _bankAccount = ObjectMother.BankAccountWithClientWithId();
+            BankAccount receiverBankAccount = ObjectMother.BankAccountWithClientWithId();
+            double value = 30;
+
+            //Action
+            Action act = () => _bankAccountService.Transfer(_bankAccount.Id, receiverBankAccount.Id, value);
+
+            //Assert
+            _mockBankAccountRepository.VerifyNoOtherCalls();
+            act.Should().Throw<BankAccountTransferToSameBankAccountException>();
+        }
+
+        [Test]
+        public void BankAccount_Applications_Transfer_ShouldBeFalse()
+        {
+            //Arrange
+            _bankAccount = ObjectMother.BankAccountWithClientWithId();
+            BankAccount receiverBankAccount = ObjectMother.BankAccountWithClientWithAnotherId();
+            _mockTransactionRepository.SetupSequence(tr => tr.Add(It.IsAny<Transaction>()))
+                .Returns(new Transaction() { Id = 1, OperationType = OperationTypeEnum.Debit })
+                .Returns(new Transaction() { Id = 2, OperationType = OperationTypeEnum.Credit });
+            _mockBankAccountRepository.Setup(b => b.GetById(_bankAccount.Id)).Returns(_bankAccount);
+            _mockBankAccountRepository.Setup(b => b.GetById(receiverBankAccount.Id)).Returns(receiverBankAccount);
+            _mockBankAccountRepository.Setup(b => b.Update(_bankAccount)).Returns(true);
+            _mockBankAccountRepository.Setup(b => b.Update(receiverBankAccount)).Returns(false);
+            double value = 490;
+
+            //Action
+            var transfer = _bankAccountService.Transfer(_bankAccount.Id, receiverBankAccount.Id, value);
+
+            //Assert
+            transfer.Should().BeFalse();
         }
 
         [Test]

@@ -21,7 +21,6 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Clients
 
         public Client Add(Client client)
         {
-            client.Validate();
             var newClient = _context.Clients.Add(client);
             _context.SaveChanges();
             return newClient;
@@ -58,7 +57,6 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Clients
         {
             if (client.Id == 0)
                 throw new IdentifierUndefinedException();
-            client.Validate();
 
             _context.Entry(client).State = EntityState.Modified;
 

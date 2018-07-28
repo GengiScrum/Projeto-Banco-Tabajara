@@ -10,26 +10,11 @@ namespace Ws_BancoTabajara.Domain.Features.BankStatements
 {
     public class BankStatement
     {
-        public BankStatement(BankAccount bankAccount)
-        {
-            BankAccountNumber = bankAccount.Number;
-            IssuanceDate = DateTime.Now;
-            ClientName = bankAccount.Client.Name;
-            Transactions = bankAccount.Transactions;
-            AvailableBalance = bankAccount.Balance;
-            ActualLimit = bankAccount.Limit;
-        }
-
-        public BankStatement()
-        {
-
-        }
-
-        public int BankAccountNumber { get; private set; }
-        public DateTime IssuanceDate { get; private set; }
-        public string ClientName { get; private set; }
-        public ICollection<Transaction> Transactions { get; private set; }
-        public double AvailableBalance { get; private set; }
-        public double ActualLimit { get; private set; }
+        public int BankAccountNumber { get; set; }
+        public DateTime IssuanceDate { get; set; }
+        public string ClientName { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
+        public double AvailableBalance { get; set; }
+        public double ActualLimit { get; set; }
     }
 }
