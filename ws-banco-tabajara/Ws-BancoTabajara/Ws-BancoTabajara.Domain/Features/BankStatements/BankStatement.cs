@@ -20,9 +20,6 @@ namespace Ws_BancoTabajara.Domain.Features.BankStatements
 
         public void GenerateBankStatement(BankAccount bankAccount)
         {
-            if (bankAccount == null)
-                throw new NotFoundException();
-
             BankAccountNumber = bankAccount.Number;
             IssuanceDate = DateTime.Now;
             ClientName = bankAccount.Client.Name;

@@ -12,7 +12,7 @@ namespace Ws_BancoTabajara.Api.Extensions
     {
         static HttpRequestMessage Request { get; set; }
 
-        public static int GetQueryValueExtension(this HttpRequestMessage request)
+        public static int GetQueryQuantityValueExtension(this HttpRequestMessage request)
         {
             int quantity = Convert.ToInt32(request.GetQueryNameValuePairs()
                 .Where(x => x.Key.Equals("quantity"))

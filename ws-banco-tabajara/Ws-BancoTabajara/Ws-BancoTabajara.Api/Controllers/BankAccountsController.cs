@@ -34,7 +34,7 @@ namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var quantity = Request.GetQueryValueExtension();
+            var quantity = Request.GetQueryQuantityValueExtension();
             return HandleQueryable<BankAccount>(_bankAccountsService.GetAll(quantity));
         }
 
@@ -43,6 +43,13 @@ namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
         public IHttpActionResult GetById(int id)
         {
             return HandleCallback(() => _bankAccountsService.GetById(id));
+        }
+
+        [HttpGet]
+        [Route("{id:int}/statement")]
+        public IHttpActionResult GenerateBankStatement(int id)
+        {
+            return HandleCallback(() => _bankAccountsService.GenerateBankStatement(id));
         }
 
         [HttpPost]
@@ -76,13 +83,6 @@ namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
         public IHttpActionResult Transfer(int idOrigin, int idReceiver, [FromBody] double value)
         {
             return HandleCallback(() => _bankAccountsService.Transfer(idOrigin, idReceiver, value));
-        }
-
-        [HttpGet]
-        [Route("{id:int}/statement")]
-        public IHttpActionResult GenerateBankStatement(int id)
-        {
-            return HandleCallback(() => _bankAccountsService.GenerateBankStatement(id));
         }
 
         [HttpDelete]
