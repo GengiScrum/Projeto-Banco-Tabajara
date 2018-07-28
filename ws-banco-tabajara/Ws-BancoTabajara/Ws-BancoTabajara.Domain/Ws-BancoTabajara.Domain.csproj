@@ -50,6 +50,7 @@
     <Compile Include="Features\BankAccounts\BankAccountInvalidTransactionValueException.cs" />
     <Compile Include="Features\BankAccounts\BankAccountInvalidNumberException.cs" />
     <Compile Include="Features\BankAccounts\BankAccountTransferToSameBankAccountException.cs" />
+    <Compile Include="Features\BankAccounts\BankAccountUpdateWithANewNumberException.cs" />
     <Compile Include="Features\BankAccounts\BankAccountWhitdrawValueHigherThanTotalBalanceException.cs" />
     <Compile Include="Features\BankAccounts\BankAccountWithoutClientException.cs" />
     <Compile Include="Features\BankAccounts\IBankAccountRepository.cs" />

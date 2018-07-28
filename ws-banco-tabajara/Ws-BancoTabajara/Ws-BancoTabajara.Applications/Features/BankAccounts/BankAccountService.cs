@@ -103,6 +103,8 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             if (bankAccount.Id == 0) throw new IdentifierUndefinedException();
             bankAccount.Validate();
             var alteredBankaccount = GetById(bankAccount.Id);
+            if (bankAccount.Number != alteredBankaccount.Number)
+                throw new BankAccountUpdateWithANewNumberException();
             alteredBankaccount.Client = bankAccount.Client;
             alteredBankaccount.Balance = bankAccount.Balance;
             alteredBankaccount.Activated = bankAccount.Activated;
