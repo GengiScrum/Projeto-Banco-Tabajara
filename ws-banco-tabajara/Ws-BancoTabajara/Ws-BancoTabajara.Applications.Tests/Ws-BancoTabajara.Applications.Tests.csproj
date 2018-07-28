@@ -78,9 +78,7 @@
     <Compile Include="Features\Clients\ClientServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Features\Transactions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Ws-BancoTabajara.Applications\Ws-BancoTabajara.Applications.csproj">
       <Project>{5F93F6F4-C930-455E-95A8-E692A1F7B5F0}</Project>

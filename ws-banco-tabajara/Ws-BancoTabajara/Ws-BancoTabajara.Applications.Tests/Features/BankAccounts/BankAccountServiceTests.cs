@@ -99,6 +99,21 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
         }
 
         [Test]
+        public void BankAccount_Applications_Update_ShouldThrowBankAccountUpdateWithANewNumberException()
+        {
+            //Arrange
+            int oldNumber = 1;
+            _bankAccount = ObjectMother.BankAccountWithClientWithId();
+            _mockBankAccountRepository.Setup(br => br.GetById(_bankAccount.Id)).Returns(new BankAccount() { Number = oldNumber });
+
+            //Action
+            Action act = () => _bankAccountService.Update(_bankAccount);
+
+            //Assert
+            act.Should().Throw<BankAccountUpdateWithANewNumberException>();
+        }
+
+        [Test]
         public void BankAccount_Applications_Update_ShouldThrowIdentifierUndefinedException()
         {
             //Arrange
