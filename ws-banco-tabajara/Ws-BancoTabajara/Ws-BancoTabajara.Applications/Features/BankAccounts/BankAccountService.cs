@@ -65,6 +65,20 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             return _repositoryBankAccount.GetById(id);
         }
 
+        public bool ChangeActivation(int id)
+        {
+            if (id == 0)
+                throw new IdentifierUndefinedException();
+
+            BankAccount bankAccount = GetById(id);
+
+            if (bankAccount == null)
+                throw new NotFoundException();
+
+            bankAccount.ChangeActivation();
+            return Update(bankAccount);
+        }
+
         public bool Remove(BankAccount bankAccount)
         {
             if (bankAccount.Id == 0) throw new IdentifierUndefinedException();

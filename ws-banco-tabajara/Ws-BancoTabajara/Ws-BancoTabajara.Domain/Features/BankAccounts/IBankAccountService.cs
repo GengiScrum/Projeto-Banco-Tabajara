@@ -13,7 +13,7 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
         int Add(BankAccount bankAccount);
         bool Update(BankAccount bankAccount);
         BankAccount GetById(int id);
-        bool ChangeActivation(int id, bool activated);
+        bool ChangeActivation(int id);
         bool Remove(BankAccount bankAccount);
         bool Withdraw(int id, double value);
         bool Deposit(int id, double value);
