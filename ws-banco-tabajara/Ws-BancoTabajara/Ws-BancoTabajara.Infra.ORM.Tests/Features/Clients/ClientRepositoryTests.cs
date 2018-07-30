@@ -108,6 +108,19 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Clients
         }
 
         [Test]
+        public void Client_Repository_GetById_ShouldThrowNotFoundException()
+        {
+            //Arrange
+            int notFoundId = 10;
+
+            //Action
+            Action act = () => _repository.GetById(notFoundId);
+
+            //Assert
+            act.Should().Throw<NotFoundException>();
+        }
+
+        [Test]
         public void Client_Repository_GetAll_ShouldBeOk()
         {
             //Arrange

@@ -2,9 +2,11 @@ namespace Ws_BancoTabajara.Infra.ORM.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+    using System.Diagnostics.CodeAnalysis;
+
     public partial class GengiScrum_DBWS_V1 : DbMigration
     {
+        [ExcludeFromCodeCoverage]
         public override void Up()
         {
             CreateTable(

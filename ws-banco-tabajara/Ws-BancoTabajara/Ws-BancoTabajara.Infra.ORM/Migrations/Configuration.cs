@@ -3,8 +3,10 @@ namespace Ws_BancoTabajara.Infra.ORM.Migrations
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    [ExcludeFromCodeCoverage]
     internal sealed class Configuration : DbMigrationsConfiguration<Ws_BancoTabajara.Infra.ORM.Base.BancoTabajaraDbContext>
     {
         public Configuration()

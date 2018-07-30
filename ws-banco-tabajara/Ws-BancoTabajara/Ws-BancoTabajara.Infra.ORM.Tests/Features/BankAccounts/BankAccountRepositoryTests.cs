@@ -63,6 +63,20 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.BankAccounts
         }
 
         [Test]
+        public void BankAccount_Repository_GetAllWithoutQuantity_ShouldBeOk()
+        {
+            //Arrange
+            var quantity = 0;
+
+            //Action
+            var clients = _repository.GetAll(quantity);
+
+            //Assert
+            clients.Should().NotBeNull();
+            clients.First().Should().Be(_bankAccountSeed);
+        }
+
+        [Test]
         public void BankAccount_Repository_GetById_ShouldBeOk()
         {
             //Action
@@ -71,6 +85,19 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.BankAccounts
             //Assert
             bankAccountResult.Should().NotBeNull();
             bankAccountResult.Should().Be(_bankAccount);
+        }
+
+        [Test]
+        public void BankAccount_Repository_GetById_ShouldThrowIdentifierUndefinedException()
+        {
+            //Arrange
+            _bankAccount = ObjectMother.BankAccountWithClientWithoutId();
+
+            //Action
+            Action act = () => _repository.GetById(_bankAccount.Id);
+
+            //Assert
+            act.Should().Throw<IdentifierUndefinedException>();
         }
 
         [Test]
