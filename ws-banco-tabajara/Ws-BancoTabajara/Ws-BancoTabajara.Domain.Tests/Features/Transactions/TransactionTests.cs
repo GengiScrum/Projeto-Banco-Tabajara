@@ -50,18 +50,5 @@ namespace Ws_BancoTabajara.Domain.Tests.Features.Transactions
             //Assert
             act.Should().Throw<TransactionInvalidValueException>();
         }
-
-        [Test]
-        public void Transaction_Domain_Validate_ShouldThrowTransactionNullBankAccount()
-        {
-            //Arrange
-            _transaction = ObjectMother.TransactionWithoutBankAccount();
-
-            //Action
-            Action act = () => _transaction.Validate();
-
-            //Assert
-            act.Should().Throw<TransactionNullBankAccount>();
-        }
     }
 }

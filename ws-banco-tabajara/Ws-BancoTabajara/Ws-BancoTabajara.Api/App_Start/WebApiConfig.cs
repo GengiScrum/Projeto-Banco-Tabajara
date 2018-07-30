@@ -46,6 +46,7 @@ namespace Ws_BancoTabajara.Api
         private static void ConfigureXMLSerialization(this HttpConfiguration config)
         {
             config.Formatters.XmlFormatter.UseXmlSerializer = true;
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/xml"));
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             Transaction transaction = new Transaction
             {
                 Date = DateTime.Now,
-                BankAccount = bankAccount,
+                BankAccountId = bankAccount.Id,
                 OperationType = OperationTypeEnum.Credit,
                 Value = value
             };
@@ -101,10 +101,10 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
         public bool Update(BankAccount bankAccount)
         {
             if (bankAccount.Id == 0) throw new IdentifierUndefinedException();
-            bankAccount.Validate();
             var alteredBankaccount = GetById(bankAccount.Id);
             if (bankAccount.Number != alteredBankaccount.Number)
                 throw new BankAccountUpdateWithANewNumberException();
+            bankAccount.Validate();
             alteredBankaccount.Client = bankAccount.Client;
             alteredBankaccount.Balance = bankAccount.Balance;
             alteredBankaccount.Activated = bankAccount.Activated;
@@ -120,7 +120,7 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             Transaction transaction = new Transaction
             {
                 Date = DateTime.Now,
-                BankAccount = bankAccount,
+                BankAccountId = bankAccount.Id,
                 OperationType = OperationTypeEnum.Debit,
                 Value = value
             };

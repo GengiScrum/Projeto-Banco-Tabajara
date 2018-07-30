@@ -13,7 +13,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Base
 {
     public class BancoTabajaraDbContext : DbContext
     {
-        public BancoTabajaraDbContext(string connection = "name=GengiScrum_DBWS") : base(connection)
+        public BancoTabajaraDbContext(string connection = "name=BancoTabajara_Gengiscrum") : base(connection)
         {
             this.Configuration.LazyLoadingEnabled = true;
         }
