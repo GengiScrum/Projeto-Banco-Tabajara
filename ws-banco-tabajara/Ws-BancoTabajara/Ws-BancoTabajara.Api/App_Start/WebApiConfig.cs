@@ -38,8 +38,9 @@ namespace Ws_BancoTabajara.Api
             var jsonSerializerSettings = config.Formatters.JsonFormatter.SerializerSettings;
             jsonSerializerSettings.Formatting = Formatting.None;
             jsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            jsonSerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            jsonSerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("aplicarion/xml"));
         }
 
         private static void ConfigureXMLSerialization(this HttpConfiguration config)
