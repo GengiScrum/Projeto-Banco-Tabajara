@@ -17,7 +17,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Transactions
             Property(t => t.Date).IsRequired();
             Property(t => t.OperationType).IsRequired();
             Property(t => t.Value).IsRequired();
-            HasRequired(t => t.BankAccount);
+            Property(t => t.BankAccountId);
         }
     }
 }

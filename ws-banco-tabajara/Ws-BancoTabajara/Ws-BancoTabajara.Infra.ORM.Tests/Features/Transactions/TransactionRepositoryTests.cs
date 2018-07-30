@@ -35,6 +35,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Transactions
 
             //Seed
             _bankAccountSeed = ObjectMother.BankAccountWithClientWithoutId();
+            _bankAccountSeed = _context.BankAccounts.Add(_bankAccountSeed);
             _transactionSeed = ObjectMother.ValidCreditTransaction(_bankAccountSeed);
             _transactionSeed = _context.Transactions.Add(_transactionSeed);
             _context.SaveChanges();
@@ -44,7 +45,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Transactions
         public void Transaction_Repository_Add_ShouldBeOk()
         {
             //Arrange
-            _transaction = ObjectMother.ValidCreditTransaction(_transactionSeed.BankAccount);
+            _transaction = ObjectMother.ValidCreditTransaction(_bankAccountSeed);
 
             //Action
             Transaction addedTransaction = _repository.Add(_transaction);
@@ -57,7 +58,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Tests.Features.Transactions
         public void Transaction_Repository_GetManyByBankAccountId_ShouldBeOk()
         {
             //Action
-            var getTransactions = _repository.GetManyByBankAccountId(_transactionSeed.BankAccount.Id).ToList();
+            var getTransactions = _repository.GetManyByBankAccountId(_bankAccountSeed.Id).ToList();
 
             //Assert
             getTransactions.Should().NotBeNullOrEmpty();

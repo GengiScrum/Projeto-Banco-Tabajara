@@ -20,7 +20,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
             this.Property(ba => ba.Number).IsRequired();
             this.Property(ba => ba.TotalBalance).IsRequired();
             this.HasRequired(ba => ba.Client);
-            this.HasMany(ba => ba.Transactions).WithRequired(t => t.BankAccount);
+            this.HasMany(ba => ba.Transactions);
         }
     }
 }

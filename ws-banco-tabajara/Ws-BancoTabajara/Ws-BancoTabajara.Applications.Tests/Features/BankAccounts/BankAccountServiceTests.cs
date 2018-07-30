@@ -133,6 +133,7 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
             //Arrange
             _bankAccount = ObjectMother.BankAccountWithoutClientWithoutId();
             _bankAccount.Id = 1;
+            _mockBankAccountRepository.Setup(b => b.GetById(_bankAccount.Id)).Returns(_bankAccount);
 
             //Action
             Action act = () => _bankAccountService.Update(_bankAccount);
@@ -148,6 +149,7 @@ namespace Ws_BancoTabajara.Applications.Tests.Features.BankAccounts
             //Arrange
             _bankAccount = ObjectMother.InvalidBankAccountNumberWithoutId(_mockClient.Object);
             _bankAccount.Id = 1;
+            _mockBankAccountRepository.Setup(b => b.GetById(_bankAccount.Id)).Returns(_bankAccount);
 
             //Action
             Action act = () => _bankAccountService.Update(_bankAccount);

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ws_BancoTabajara.Domain.Features.BankAccounts;
 
 namespace Ws_BancoTabajara.Domain.Features.Transactions
 {
@@ -11,12 +7,13 @@ namespace Ws_BancoTabajara.Domain.Features.Transactions
         public DateTime Date { get; set; }
         public OperationTypeEnum OperationType { get; set; }
         public double Value { get; set; }
-        public BankAccount BankAccount { get; set; }
+        //public BankAccount BankAccount { get; set; }
+        public int BankAccountId { get; set; }
 
         public override void Validate()
         {
             if (Value == 0) throw new TransactionInvalidValueException();
-            if (BankAccount == null) throw new TransactionNullBankAccount();
+            //if (BankAccount == null) throw new TransactionNullBankAccount();
         }
     }
 }

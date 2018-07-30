@@ -25,7 +25,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.Transactions
 
         public IQueryable<Transaction> GetManyByBankAccountId(int bankAccountId)
         {
-            return _context.Transactions.Where(t => t.BankAccount.Id == bankAccountId);
+            return _context.Transactions.Where(t => t.BankAccountId == bankAccountId);
         }
     }
 }

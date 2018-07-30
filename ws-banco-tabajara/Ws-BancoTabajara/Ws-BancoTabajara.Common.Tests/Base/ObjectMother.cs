@@ -219,7 +219,7 @@ namespace Ws_BancoTabajara.Common.Tests.Base
         {
             return new Transaction
             {
-                BankAccount = bankAccount,
+                BankAccountId = bankAccount.Id,
                 Date = DateTime.Now,
                 OperationType = OperationTypeEnum.Credit,
                 Value = 500
@@ -230,7 +230,7 @@ namespace Ws_BancoTabajara.Common.Tests.Base
         {
             return new Transaction
             {
-                BankAccount = bankAccount,
+                BankAccountId = bankAccount.Id,
                 Date = DateTime.Now,
                 OperationType = OperationTypeEnum.Credit,
                 Value = 0
