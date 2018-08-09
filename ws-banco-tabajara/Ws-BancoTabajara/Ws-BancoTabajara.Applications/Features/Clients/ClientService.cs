@@ -1,8 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ws_BancoTabajara.Applications.Features.Clients.Commands;
+using Ws_BancoTabajara.Applications.Features.Clients.Queries;
+using Ws_BancoTabajara.Applications.Features.Clients.ViewModels;
 using Ws_BancoTabajara.Domain.Exceptions;
 using Ws_BancoTabajara.Domain.Features.Clients;
 
@@ -17,48 +21,40 @@ namespace Ws_BancoTabajara.Applications.Features.Clients
             _clientRepository = clientRepository;
         }
 
-        public int Add(Client client)
+        public int Add(ClientRegisterCommand cmd)
         {
-            client.Validate();
+            var client = Mapper.Map<ClientRegisterCommand, Client>(cmd);
 
             var newClient = _clientRepository.Add(client);
             return newClient.Id;
         }
 
-        public IQueryable<Client> GetAll(int quantity)
+        public IQueryable<Client> GetAll(ClientQuery client)
         {
-            return _clientRepository.GetAll(quantity);
+            return _clientRepository.GetAll(client.Quantity);
         }
 
-        public Client GetById(int clientId)
+        public ClientViewModel GetById(int clientId)
         {
             if (clientId == 0)
                 throw new IdentifierUndefinedException();
-
-            return _clientRepository.GetById(clientId);
+            Client client = _clientRepository.GetById(clientId);
+            return Mapper.Map<Client, ClientViewModel>(client);
         }
 
-        public bool Remove(Client client)
+        public bool Remove(ClientRemoveCommand cmd)
         {
-            if (client.Id == 0)
-                throw new IdentifierUndefinedException();
-
-            return _clientRepository.Remove(client.Id);
+            return _clientRepository.Remove(cmd.Id);
         }
 
-        public bool Update(Client client)
+        public bool Update(ClientUpdateCommand cmd)
         {
-            client.Validate();
+            var modifiedClient = _clientRepository.GetById(cmd.Id);
+            modifiedClient.Name = cmd.Name;
+            modifiedClient.CPF = cmd.CPF;
+            modifiedClient.RG = cmd.RG;
 
-            if (client.Id == 0)
-                throw new IdentifierUndefinedException();
-
-            var alteredClient = _clientRepository.GetById(client.Id);
-            alteredClient.Name = client.Name;
-            alteredClient.CPF = client.CPF;
-            alteredClient.RG = client.RG;
-
-            return _clientRepository.Update(alteredClient);
+            return _clientRepository.Update(modifiedClient);
         }
     }
 }

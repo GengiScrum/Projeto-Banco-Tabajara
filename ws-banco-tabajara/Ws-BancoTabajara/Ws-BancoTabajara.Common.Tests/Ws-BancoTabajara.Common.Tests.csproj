@@ -45,6 +45,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ws-BancoTabajara.Applications\Ws-BancoTabajara.Applications.csproj">
+      <Project>{5F93F6F4-C930-455E-95A8-E692A1F7B5F0}</Project>
+      <Name>Ws-BancoTabajara.Applications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ws-BancoTabajara.Domain\Ws-BancoTabajara.Domain.csproj">
       <Project>{A557824B-9540-4B4E-BA32-CED5AE623208}</Project>
       <Name>Ws-BancoTabajara.Domain</Name>

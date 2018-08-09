@@ -115,6 +115,10 @@
       <Project>{4940fdd3-c2b0-440a-a595-90a78aa285ed}</Project>
       <Name>Ws-BancoTabajara.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Ws-BancoTabajara.Applications\Ws-BancoTabajara.Applications.csproj">
+      <Project>{5F93F6F4-C930-455E-95A8-E692A1F7B5F0}</Project>
+      <Name>Ws-BancoTabajara.Applications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ws-BancoTabajara.Common.Tests\Ws-BancoTabajara.Common.Tests.csproj">
       <Project>{8ECDDD33-88EC-4F5C-BFED-7F601339B21C}</Project>
       <Name>Ws-BancoTabajara.Common.Tests</Name>

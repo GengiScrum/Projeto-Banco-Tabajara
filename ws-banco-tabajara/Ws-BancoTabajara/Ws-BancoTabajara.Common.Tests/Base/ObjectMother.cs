@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ws_BancoTabajara.Applications.Features.Clients.Commands;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.BankStatements;
 using Ws_BancoTabajara.Domain.Features.Clients;
@@ -244,6 +245,41 @@ namespace Ws_BancoTabajara.Common.Tests.Base
                 Date = DateTime.Now,
                 OperationType = OperationTypeEnum.Credit,
                 Value = 500
+            };
+        }
+
+        #endregion
+
+        #region ClientCommands
+
+        public static ClientRegisterCommand AddClient()
+        {
+            return new ClientRegisterCommand
+            {
+                Name = "jão",
+                CPF = "123.234.345-13",
+                RG = "2.123.123",
+                BirthDate = "12/08/1996"
+            };
+        }
+
+        public static ClientUpdateCommand UpdateClient()
+        {
+            return new ClientUpdateCommand
+            {
+                Name = "jão",
+                CPF = "123.234.345-13",
+                RG = "2.123.123",
+                BirthDate = "12/08/1996",
+                Id = 1
+            };
+        }
+
+        public static ClientRemoveCommand RemoveClient()
+        {
+            return new ClientRemoveCommand
+            {
+                Id = 1
             };
         }
 

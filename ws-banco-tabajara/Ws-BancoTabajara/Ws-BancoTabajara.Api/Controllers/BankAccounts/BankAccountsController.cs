@@ -22,13 +22,9 @@ namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
     {
         public IBankAccountService _bankAccountsService;
 
-        public BankAccountsController() : base()
+        public BankAccountsController(IBankAccountService bankAccountsService) : base()
         {
-            var context = new BancoTabajaraDbContext();
-            var bankAccountRepository = new BankAccountRepository(context);
-            var transactionRepository = new TransactionRepository(context);
-            var clientRepository = new ClientRepository(context);
-            _bankAccountsService = new BankAccountService(bankAccountRepository, transactionRepository, clientRepository);
+            _bankAccountsService = bankAccountsService;
         }
 
         [HttpGet]

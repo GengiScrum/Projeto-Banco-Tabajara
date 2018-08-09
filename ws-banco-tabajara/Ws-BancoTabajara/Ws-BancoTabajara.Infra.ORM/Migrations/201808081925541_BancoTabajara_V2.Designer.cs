@@ -7,13 +7,13 @@ namespace Ws_BancoTabajara.Infra.ORM.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class dfoasfkodasofefaew : IMigrationMetadata
+    public sealed partial class BancoTabajara_V2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(dfoasfkodasofefaew));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(BancoTabajara_V2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201807301743491_dfoasfkodasofefaew"; }
+            get { return "201808081925541_BancoTabajara_V2"; }
         }
         
         string IMigrationMetadata.Source

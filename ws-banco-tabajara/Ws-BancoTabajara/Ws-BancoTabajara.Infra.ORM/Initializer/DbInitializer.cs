@@ -9,7 +9,7 @@ using Ws_BancoTabajara.Infra.ORM.Migrations;
 
 namespace Ws_BancoTabajara.Infra.ORM.Initializer
 {
-    class DbInitializer : MigrateDatabaseToLatestVersion<BancoTabajaraDbContext, Configuration>
+    public class DbInitializer : MigrateDatabaseToLatestVersion<BancoTabajaraDbContext, Configuration>
     {
     }
 }

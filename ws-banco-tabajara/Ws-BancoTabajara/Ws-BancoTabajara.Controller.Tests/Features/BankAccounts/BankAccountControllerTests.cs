@@ -33,10 +33,9 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
             HttpRequestMessage request = new HttpRequestMessage();
             request.SetConfiguration(new HttpConfiguration());
             _mockBankAccountService = new Mock<IBankAccountService>();
-            _bankAccountController = new BankAccountsController()
+            _bankAccountController = new BankAccountsController(_mockBankAccountService.Object)
             {
-                Request = request,
-                _bankAccountsService = _mockBankAccountService.Object,
+                Request = request
             };
             _mockBankAccount = new Mock<BankAccount>();
             _mockClient = new Mock<Client>();
