@@ -3,7 +3,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class dfoasfkodasofefaew : DbMigration
+    public partial class BancoTabajara_V2 : DbMigration
     {
         public override void Up()
         {

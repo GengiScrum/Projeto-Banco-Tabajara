@@ -1,8 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.Commands;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.Queries;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.ViewModels;
 using Ws_BancoTabajara.Domain.Exceptions;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.BankStatements;
@@ -24,39 +28,23 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
             _repositoryClient = repositoryClient;
         }
 
-        public int Add(BankAccount bankAccount)
+        public int Add(BankAccountRegisterCommand bankAccountCommand)
         {
-            bankAccount.Client = _repositoryClient.GetById(bankAccount.Client.Id);
-            bankAccount.Validate();
-            var bank = _repositoryBankAccount.Add(bankAccount);
-            return bank.Id;
+            var bankAccount = Mapper.Map<BankAccountRegisterCommand, BankAccount>(bankAccountCommand);
+            bankAccount = _repositoryBankAccount.Add(bankAccount);
+            return bankAccount.Id;
         }
 
-        public bool Deposit(int id, double value)
+        public bool Deposit(BankAccountOperationCommand operation)
         {
-            if (value <= 0) throw new BankAccountInvalidTransactionValueException();
-            BankAccount bankAccount = GetById(id);
-            Transaction transaction = new Transaction
-            {
-                Date = DateTime.Now,
-                BankAccountId = bankAccount.Id,
-                OperationType = OperationTypeEnum.Credit,
-                Value = value
-            };
-            bankAccount.Deposit(value);
-            transaction = _repositoryTransaction.Add(transaction);
-            if (transaction.Id > 0)
-            {
-                bankAccount.Transactions.Add(transaction);
-                return Update(bankAccount);
-            }
-            else
-                return false;
+            var bankAccount = GetById(operation.Id);
+            bankAccount.Deposit(operation.Value);
+            return _repositoryBankAccount.Update(bankAccount);
         }
 
-        public IQueryable<BankAccount> GetAll(int quantity)
+        public IQueryable<BankAccount> GetAll(BankAccountQuery query)
         {
-            return _repositoryBankAccount.GetAll(quantity);
+            return _repositoryBankAccount.GetAll(query.Quantity);
         }
 
         public BankAccount GetById(int id)
@@ -76,63 +64,41 @@ namespace Ws_BancoTabajara.Applications.Features.BankAccounts
                 throw new NotFoundException();
 
             bankAccount.ChangeActivation();
-            return Update(bankAccount);
+            return _repositoryBankAccount.Update(bankAccount);
         }
 
-        public bool Remove(BankAccount bankAccount)
+        public bool Remove(BankAccountRemoveCommand bankAccount)
         {
             if (bankAccount.Id == 0) throw new IdentifierUndefinedException();
             return _repositoryBankAccount.Remove(bankAccount.Id);
         }
 
-        public bool Transfer(int originBankAccountId, int receiverBankAccountId, double value)
+        public bool Transfer(BankAccountTransferCommand transfer)
         {
-            if (value <= 0) throw new BankAccountInvalidTransactionValueException();
-            if (originBankAccountId == receiverBankAccountId)
-                throw new BankAccountTransferToSameBankAccountException();
-            var withdraw = Withdraw(originBankAccountId, value);
-            var deposit = Deposit(receiverBankAccountId, value);
+            var withdraw = Withdraw(new BankAccountOperationCommand
+                { Id = transfer.OriginId, Value = transfer.Value});
+            var deposit = Deposit(new BankAccountOperationCommand
+                { Id = transfer.DestinationId, Value = transfer.Value});
             if (withdraw && deposit)
                 return true;
             else
                 return false;
         }
 
-        public bool Update(BankAccount bankAccount)
+        public bool Update(BankAccountUpdateCommand bankAccount)
         {
-            if (bankAccount.Id == 0) throw new IdentifierUndefinedException();
-            var alteredBankaccount = GetById(bankAccount.Id);
-            if (bankAccount.Number != alteredBankaccount.Number)
+            int number = GetById(bankAccount.Id).Number;
+            var alteredBankaccount = Mapper.Map<BankAccountUpdateCommand, BankAccount>(bankAccount);
+            if (alteredBankaccount.Number != number)
                 throw new BankAccountUpdateWithANewNumberException();
-            bankAccount.Validate();
-            alteredBankaccount.Client = bankAccount.Client;
-            alteredBankaccount.Balance = bankAccount.Balance;
-            alteredBankaccount.Activated = bankAccount.Activated;
-            alteredBankaccount.Limit = bankAccount.Limit;
-            alteredBankaccount.Transactions = bankAccount.Transactions;
             return _repositoryBankAccount.Update(alteredBankaccount);
         }
 
-        public bool Withdraw(int id, double value)
+        public bool Withdraw(BankAccountOperationCommand operation)
         {
-            if (value <= 0) throw new BankAccountInvalidTransactionValueException();
-            BankAccount bankAccount = GetById(id);
-            Transaction transaction = new Transaction
-            {
-                Date = DateTime.Now,
-                BankAccountId = bankAccount.Id,
-                OperationType = OperationTypeEnum.Debit,
-                Value = value
-            };
-            bankAccount.Withdraw(value);
-            transaction = _repositoryTransaction.Add(transaction);
-            if (transaction.Id > 0)
-            {
-                bankAccount.Transactions.Add(transaction);
-                return Update(bankAccount);
-            }
-            else
-                return false;
+            BankAccount bankAccount = GetById(operation.Id);
+            bankAccount.Withdraw(operation.Value);
+            return _repositoryBankAccount.Update(bankAccount);
         }
 
         public BankStatement GenerateBankStatement(int id)

@@ -15,5 +15,10 @@ namespace Ws_BancoTabajara.Domain.Features.Transactions
             if (Value == 0) throw new TransactionInvalidValueException();
             //if (BankAccount == null) throw new TransactionNullBankAccount();
         }
+
+        public override string ToString()
+        {
+            return string.Format("Date: {0} - Operation Type: {1} - Value: {2}", Date.ToShortTimeString(), OperationType, Value);
+        }
     }
 }

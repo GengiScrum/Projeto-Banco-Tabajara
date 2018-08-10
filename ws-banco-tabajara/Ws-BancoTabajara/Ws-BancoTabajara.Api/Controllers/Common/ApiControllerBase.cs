@@ -1,4 +1,6 @@
-﻿using FluentValidation.Results;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +13,11 @@ using System.Web;
 using System.Web.Http;
 using Ws_BancoTabajara.Api.Exceptions;
 using Ws_BancoTabajara.Api.Models;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.ViewModels;
+using Ws_BancoTabajara.Applications.Features.Clients.ViewModels;
+using Ws_BancoTabajara.Domain;
 using Ws_BancoTabajara.Domain.Exceptions;
+using Ws_BancoTabajara.Domain.Features.BankAccounts;
 
 namespace Ws_BancoTabajara.Api.Controllers.Common
 {
@@ -21,7 +27,19 @@ namespace Ws_BancoTabajara.Api.Controllers.Common
         {
             try
             {
-                return Ok(func());
+                return Ok(Mapper.Map<TSucess>(func()));
+            }
+            catch (Exception e)
+            {
+                return HandleFailure(e);
+            }
+        }
+
+        protected IHttpActionResult HandleCallback<TSource, TDestination>(Func<TSource> func)
+        {
+            try
+            {
+                return Ok(Mapper.Map<TDestination>(func()));
             }
             catch (Exception e)
             {
@@ -34,9 +52,9 @@ namespace Ws_BancoTabajara.Api.Controllers.Common
             return Ok(query.ToList());
         }
 
-        protected IHttpActionResult HandleQueryable<TSource>(IQueryable<TSource> query)
+        protected IHttpActionResult HandleQueryable<TSource, TDestination>(IQueryable<TSource> query)
         {
-            return Ok(query.ToList());
+            return Ok(query.ProjectTo<TDestination>().ToList());
         }
 
         protected IHttpActionResult HandleFailure<T>(T exceptionToHandle) where T : Exception

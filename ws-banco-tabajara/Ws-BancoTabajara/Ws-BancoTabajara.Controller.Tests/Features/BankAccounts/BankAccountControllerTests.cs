@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentValidation.Results;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -10,7 +11,14 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using Ws_BancoTabajara.Api.Controllers.BankAccounts;
+using Ws_BancoTabajara.Applications.Features.BankAccounts;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.Commands;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.Queries;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.ViewModels;
+using Ws_BancoTabajara.Applications.Features.Clients.ViewModels;
+using Ws_BancoTabajara.Applications.Mapping;
 using Ws_BancoTabajara.Common.Tests.Base;
+using Ws_BancoTabajara.Controller.Tests.Initializer;
 using Ws_BancoTabajara.Domain.Features.BankAccounts;
 using Ws_BancoTabajara.Domain.Features.BankStatements;
 using Ws_BancoTabajara.Domain.Features.Clients;
@@ -19,13 +27,19 @@ using Ws_BancoTabajara.Domain.Features.Transactions;
 namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
 {
     [TestFixture]
-    public class BankAccountControllerTests
+    public class BankAccountControllerTests : TestControllerBase
     {
         private BankAccountsController _bankAccountController;
         private Mock<IBankAccountService> _mockBankAccountService;
         private Mock<BankAccount> _mockBankAccount;
+        private Mock<BankAccountRegisterCommand> _mockBankAccountRegisterCommand;
+        private Mock<BankAccountUpdateCommand> _mockBankAccountUpdateCommand;
+        private Mock<BankAccountRemoveCommand> _mockBankAccountRemoveCommand;
+        private Mock<BankAccountTransferCommand> _mockBankAccountTransferCommand;
+        private Mock<BankAccountOperationCommand> _mockBankAccountOperationCommand;
         private Mock<Client> _mockClient;
         private Mock<BankStatement> _mockBankStatement;
+        private Mock<ValidationResult> _validator;
 
         [SetUp]
         public void Initialize()
@@ -33,30 +47,41 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
             HttpRequestMessage request = new HttpRequestMessage();
             request.SetConfiguration(new HttpConfiguration());
             _mockBankAccountService = new Mock<IBankAccountService>();
-            _bankAccountController = new BankAccountsController()
+            _bankAccountController = new BankAccountsController(_mockBankAccountService.Object)
             {
-                Request = request,
-                _bankAccountsService = _mockBankAccountService.Object,
+                Request = request
             };
+            _validator = new Mock<ValidationResult>();
             _mockBankAccount = new Mock<BankAccount>();
+            _mockBankAccountRegisterCommand = new Mock<BankAccountRegisterCommand>();
+            _mockBankAccountRegisterCommand.Setup(cmd => cmd.Validate()).Returns(_validator.Object);
+            _mockBankAccountUpdateCommand = new Mock<BankAccountUpdateCommand>();
+            _mockBankAccountUpdateCommand.Setup(cmd => cmd.Validate()).Returns(_validator.Object);
+            _mockBankAccountRemoveCommand = new Mock<BankAccountRemoveCommand>();
+            _mockBankAccountRemoveCommand.Setup(cmd => cmd.Validate()).Returns(_validator.Object);
+            _mockBankAccountTransferCommand = new Mock<BankAccountTransferCommand>();
+            _mockBankAccountTransferCommand.Setup(cmd => cmd.Validate()).Returns(_validator.Object);
+            _mockBankAccountOperationCommand = new Mock<BankAccountOperationCommand>();
+            _mockBankAccountOperationCommand.Setup(cmd => cmd.Validate()).Returns(_validator.Object);
             _mockClient = new Mock<Client>();
             _mockBankStatement = new Mock<BankStatement>();
+            var isValid = true;
+            _validator.Setup(v => v.IsValid).Returns(isValid);
         }
 
         [Test]
         public void BankAccount_Controller_GetAll_ShouldBeOk()
         {
             //Arrange
-            var quantity = 0;
             var bankAccount = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
             var response = new List<BankAccount>() { bankAccount }.AsQueryable();
-            _mockBankAccountService.Setup(bas => bas.GetAll(quantity)).Returns(response);
+            _mockBankAccountService.Setup(bas => bas.GetAll(It.IsAny<BankAccountQuery>())).Returns(response);
 
             //Action
             var callback = _bankAccountController.GetAll();
 
             //Assert
-            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<List<BankAccount>>>().Subject;
+            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<List<BankAccountViewModel>>>().Subject;
             httpResponse.Content.Should().NotBeNullOrEmpty();
             httpResponse.Content.First().Id.Should().Be(bankAccount.Id);
         }
@@ -73,7 +98,7 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
             IHttpActionResult callback = _bankAccountController.GetById(id);
 
             //Assert
-            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<BankAccount>>().Subject;
+            var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<BankAccountViewModel>>().Subject;
             httpResponse.Content.Should().NotBeNull();
             httpResponse.Content.Id.Should().Be(id);
             _mockBankAccountService.Verify(bas => bas.GetById(id), Times.Once);
@@ -85,15 +110,15 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
         {
             //Arrange
             var id = 1;
-            _mockBankAccountService.Setup(bas => bas.Add(_mockBankAccount.Object)).Returns(id);
+            _mockBankAccountService.Setup(bas => bas.Add(_mockBankAccountRegisterCommand.Object)).Returns(id);
 
             //Action
-            IHttpActionResult callback = _bankAccountController.Add(_mockBankAccount.Object);
+            IHttpActionResult callback = _bankAccountController.Add(_mockBankAccountRegisterCommand.Object);
 
             //Assert
             var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<int>>().Subject;
             httpResponse.Content.Should().Be(id);
-            _mockBankAccountService.Verify(bas => bas.Add(_mockBankAccount.Object), Times.Once);
+            _mockBankAccountService.Verify(bas => bas.Add(_mockBankAccountRegisterCommand.Object), Times.Once);
         }
 
         [Test]
@@ -101,15 +126,15 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
         {
             //Arrange
             var isUpdated = true;
-            _mockBankAccountService.Setup(bas => bas.Update(_mockBankAccount.Object)).Returns(isUpdated);
+            _mockBankAccountService.Setup(bas => bas.Update(_mockBankAccountUpdateCommand.Object)).Returns(isUpdated);
 
             //Action
-            IHttpActionResult callback = _bankAccountController.Update(_mockBankAccount.Object);
+            IHttpActionResult callback = _bankAccountController.Update(_mockBankAccountUpdateCommand.Object);
 
             //Assert
             var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
             httpResponse.Content.Should().BeTrue();
-            _mockBankAccountService.Verify(bas => bas.Update(_mockBankAccount.Object), Times.Once);
+            _mockBankAccountService.Verify(bas => bas.Update(_mockBankAccountUpdateCommand.Object), Times.Once);
         }
 
         [Test]
@@ -117,15 +142,15 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
         {
             //Arrange
             var isDeleted = true;
-            _mockBankAccountService.Setup(bas => bas.Remove(_mockBankAccount.Object)).Returns(isDeleted);
+            _mockBankAccountService.Setup(bas => bas.Remove(_mockBankAccountRemoveCommand.Object)).Returns(isDeleted);
 
             //Action
-            IHttpActionResult callback = _bankAccountController.Remove(_mockBankAccount.Object);
+            IHttpActionResult callback = _bankAccountController.Remove(_mockBankAccountRemoveCommand.Object);
 
             //Assert
             var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
             httpResponse.Content.Should().BeTrue();
-            _mockBankAccountService.Verify(bas => bas.Remove(_mockBankAccount.Object), Times.Once);
+            _mockBankAccountService.Verify(bas => bas.Remove(_mockBankAccountRemoveCommand.Object), Times.Once);
         }
 
         [Test]
@@ -133,16 +158,14 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
         {
             //Arrange
             var wasWithdrawn = true;
-            var value = 100;
-            var bankAccount = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
-            _mockBankAccountService.Setup(bas => bas.Withdraw(bankAccount.Id, value)).Returns(wasWithdrawn);
+            _mockBankAccountService.Setup(bas => bas.Withdraw(_mockBankAccountOperationCommand.Object)).Returns(wasWithdrawn);
 
             //Action
-            IHttpActionResult callback = _bankAccountController.Withdraw(bankAccount.Id, value);
+            IHttpActionResult callback = _bankAccountController.Withdraw(_mockBankAccountOperationCommand.Object);
 
             //Assert
             var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
-            _mockBankAccountService.Verify(bas => bas.Withdraw(bankAccount.Id, value), Times.Once);
+            _mockBankAccountService.Verify(bas => bas.Withdraw(_mockBankAccountOperationCommand.Object), Times.Once);
         }
 
         [Test]
@@ -150,16 +173,14 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
         {
             //Arrange
             var wasDeposited = true;
-            var value = 100;
-            var bankAccount = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
-            _mockBankAccountService.Setup(bas => bas.Deposit(bankAccount.Id, value)).Returns(wasDeposited);
+            _mockBankAccountService.Setup(bas => bas.Deposit(_mockBankAccountOperationCommand.Object)).Returns(wasDeposited);
 
             //Action
-            IHttpActionResult callback = _bankAccountController.Deposit(bankAccount.Id, value);
+            IHttpActionResult callback = _bankAccountController.Deposit(_mockBankAccountOperationCommand.Object);
 
             //Assert
             var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
-            _mockBankAccountService.Verify(bas => bas.Deposit(bankAccount.Id, value), Times.Once);
+            _mockBankAccountService.Verify(bas => bas.Deposit(_mockBankAccountOperationCommand.Object), Times.Once);
         }
 
         [Test]
@@ -167,17 +188,14 @@ namespace Ws_BancoTabajara.Controller.Tests.Features.BankAccounts
         {
             //Arrange
             var wasTransferred = true;
-            var value = 100;
-            var bankAccountOrigin = ObjectMother.BankAccountWithClientWithId(_mockClient.Object);
-            var bankAccountReceiver = ObjectMother.BankAccountWithClientWithAnotherId(_mockClient.Object);
-            _mockBankAccountService.Setup(bas => bas.Transfer(bankAccountOrigin.Id, bankAccountReceiver.Id, value)).Returns(wasTransferred);
+            _mockBankAccountService.Setup(bas => bas.Transfer(_mockBankAccountTransferCommand.Object)).Returns(wasTransferred);
 
             //Action
-            IHttpActionResult callback = _bankAccountController.Transfer(bankAccountOrigin.Id, bankAccountReceiver.Id, value);
+            IHttpActionResult callback = _bankAccountController.Transfer(_mockBankAccountTransferCommand.Object);
 
             //Assert
             var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<bool>>().Subject;
-            _mockBankAccountService.Verify(bas => bas.Transfer(bankAccountOrigin.Id, bankAccountReceiver.Id, value), Times.Once);
+            _mockBankAccountService.Verify(bas => bas.Transfer(_mockBankAccountTransferCommand.Object), Times.Once);
         }
 
         [Test]

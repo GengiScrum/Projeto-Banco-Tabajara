@@ -66,10 +66,8 @@ namespace Ws_BancoTabajara.Infra.ORM.Features.BankAccounts
         {
             if (bankAccount.Id == 0)
                 throw new IdentifierUndefinedException();
-
+            
             _context.Entry(bankAccount).State = EntityState.Modified;
-
-            bankAccount.Validate();
             return SaveChanges();
         }
     }

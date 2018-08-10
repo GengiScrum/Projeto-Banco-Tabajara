@@ -14,6 +14,10 @@ using Ws_BancoTabajara.Infra.ORM.Features.Clients;
 using Ws_BancoTabajara.Infra.ORM.Features.Transactions;
 using System.Web.UI.WebControls;
 using Ws_BancoTabajara.Api.Extensions;
+using Ws_BancoTabajara.Applications.Features.Clients.ViewModels;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.Queries;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.ViewModels;
+using Ws_BancoTabajara.Applications.Features.BankAccounts.Commands;
 
 namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
 {
@@ -22,27 +26,23 @@ namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
     {
         public IBankAccountService _bankAccountsService;
 
-        public BankAccountsController() : base()
+        public BankAccountsController(IBankAccountService bankAccountsService) : base()
         {
-            var context = new BancoTabajaraDbContext();
-            var bankAccountRepository = new BankAccountRepository(context);
-            var transactionRepository = new TransactionRepository(context);
-            var clientRepository = new ClientRepository(context);
-            _bankAccountsService = new BankAccountService(bankAccountRepository, transactionRepository, clientRepository);
+            _bankAccountsService = bankAccountsService;
         }
 
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            var quantity = Request.GetQueryQuantityValueExtension();
-            return HandleQueryable<BankAccount>(_bankAccountsService.GetAll(quantity));
+            BankAccountQuery query = new BankAccountQuery() { Quantity = Request.GetQueryQuantityValueExtension() };
+            return HandleQueryable<BankAccount, BankAccountViewModel>(_bankAccountsService.GetAll(query));
         }
 
         [HttpGet]
         [Route("{id:int}")]
         public IHttpActionResult GetById(int id)
         {
-            return HandleCallback(() => _bankAccountsService.GetById(id));
+            return HandleCallback<BankAccount, BankAccountViewModel>(() => _bankAccountsService.GetById(id));
         }
 
         [HttpGet]
@@ -53,36 +53,40 @@ namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
         }
 
         [HttpPost]
-        public IHttpActionResult Add(BankAccount bankAccount)
+        public IHttpActionResult Add(BankAccountRegisterCommand bankAccount)
         {
+            var validate = bankAccount.Validate();
+            if (!validate.IsValid)
+                return HandleValidationFailure(validate.Errors);
+
             return HandleCallback(() => _bankAccountsService.Add(bankAccount));
         }
 
         [HttpPut]
-        public IHttpActionResult Update(BankAccount bankAccount)
+        public IHttpActionResult Update(BankAccountUpdateCommand bankAccount)
         {
             return HandleCallback(() => _bankAccountsService.Update(bankAccount));
         }
 
         [HttpPatch]
         [Route("{id:int}/withdraw")]
-        public IHttpActionResult Withdraw(int id, [FromBody] double value)
+        public IHttpActionResult Withdraw(BankAccountOperationCommand operation)
         {
-            return HandleCallback(() => _bankAccountsService.Withdraw(id, value));
+            return HandleCallback(() => _bankAccountsService.Withdraw(operation));
         }
 
         [HttpPatch]
         [Route("{id:int}/deposit")]
-        public IHttpActionResult Deposit(int id, [FromBody] double value)
+        public IHttpActionResult Deposit(BankAccountOperationCommand operation)
         {
-            return HandleCallback(() => _bankAccountsService.Deposit(id, value));
+            return HandleCallback(() => _bankAccountsService.Deposit(operation));
         }
 
         [HttpPatch]
         [Route("{idOrigin:int}/{idReceiver:int}/transfer")]
-        public IHttpActionResult Transfer(int idOrigin, int idReceiver, [FromBody] double value)
+        public IHttpActionResult Transfer(BankAccountTransferCommand transfer)
         {
-            return HandleCallback(() => _bankAccountsService.Transfer(idOrigin, idReceiver, value));
+            return HandleCallback(() => _bankAccountsService.Transfer(transfer));
         }
 
         [HttpPatch]
@@ -93,7 +97,7 @@ namespace Ws_BancoTabajara.Api.Controllers.BankAccounts
         }
 
         [HttpDelete]
-        public IHttpActionResult Remove(BankAccount bankAccount)
+        public IHttpActionResult Remove(BankAccountRemoveCommand bankAccount)
         {
             return HandleCallback(() => _bankAccountsService.Remove(bankAccount));
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ws_BancoTabajara.Domain.Features.Clients;
 using Ws_BancoTabajara.Domain.Features.Transactions;
 
@@ -12,7 +13,7 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
         }
 
         public int Number { get; set; }
-        public Client Client { get; set; }
+        public virtual Client Client { get; set; }
         public double Balance { get; set; }
         public bool Activated { get; set; }
         public double Limit { get; set; }
@@ -43,6 +44,8 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
                 throw new BankAccountWhitdrawValueHigherThanTotalBalanceException();
 
             this.Balance -= value;
+            AddNewTransaction(value, OperationTypeEnum.Debit);
+
         }
 
         public void Deposit(double value)
@@ -50,6 +53,20 @@ namespace Ws_BancoTabajara.Domain.Features.BankAccounts
             if (value <= 0) throw new BankAccountInvalidTransactionValueException();
 
             this.Balance += value;
+            AddNewTransaction(value, OperationTypeEnum.Credit);
+        }
+
+        private void AddNewTransaction(double value, OperationTypeEnum type)
+        {
+            Transaction transaction = new Transaction
+            {
+                Date = DateTime.Now,
+                BankAccountId = Id,
+                OperationType = type,
+                Value = value
+            };
+
+            Transactions.Add(transaction);
         }
     }
 }

@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ws_BancoTabajara.Applications.Mapping;
+using Ws_BancoTabajara.Controller.Tests.Common;
 
 namespace Ws_BancoTabajara.Controller.Tests.Initializer
 {
     public class TestControllerBase
     {
         [OneTimeSetUp]
-        public void InitializeOnceTime()
+        public void OneTimeSetUp()
         {
-            // Código que executa quando os testes começam
+            AutoMapperTestsInitializer.Reset();
+            AutoMapperTestsInitializer.Initialize();
         }
     }
 }

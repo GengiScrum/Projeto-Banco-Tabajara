@@ -7,7 +7,7 @@ namespace Ws_BancoTabajara.Infra.ORM.Migrations
     using System.Linq;
 
     [ExcludeFromCodeCoverage]
-    internal sealed class Configuration : DbMigrationsConfiguration<Ws_BancoTabajara.Infra.ORM.Base.BancoTabajaraDbContext>
+    public class Configuration : DbMigrationsConfiguration<Ws_BancoTabajara.Infra.ORM.Base.BancoTabajaraDbContext>
     {
         public Configuration()
         {

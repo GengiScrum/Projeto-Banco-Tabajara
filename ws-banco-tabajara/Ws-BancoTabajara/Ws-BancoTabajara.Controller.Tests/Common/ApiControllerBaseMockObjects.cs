@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using AutoMapper;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,9 @@ namespace Ws_BancoTabajara.Controller.Tests.Common
             return base.HandleQuery(query);
         }
 
-        public IHttpActionResult HandleQueryable<TSource>(IQueryable<TSource> query)
+        public IHttpActionResult HandleQueryable<TSource, TDestination>(IQueryable<TSource> query)
         {
-            return base.HandleQueryable<TSource>(query);
+            return base.HandleQueryable<TSource, TDestination>(query);
         }
 
         public IHttpActionResult HandleValidationFailure<T>(IList<T> validationFailure) where T : ValidationFailure

@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using FluentValidation.Results;
 using Moq;
 using NUnit.Framework;
@@ -84,7 +85,7 @@ namespace Ws_BancoTabajara.Controller.Tests.Common
             //Arrange
             var query = new List<ApiControllerBaseDummy>() { _dummy.Object }.AsQueryable();
             // Action
-            var callback = _apiControllerBase.HandleQueryable<ApiControllerBaseDummy>(query);
+            var callback = _apiControllerBase.HandleQueryable<ApiControllerBaseDummy, ApiControllerBaseDummy>(query);
             //Assert
             var httpResponse = callback.Should().BeOfType<OkNegotiatedContentResult<List<ApiControllerBaseDummy>>>().Subject;
             httpResponse.Content.Should().NotBeNull();
